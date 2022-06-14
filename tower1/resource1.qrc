@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/new/prefix1">
+        <file>resource1/20220527185447.png</file>
+        <file>resource1/20220527194540.jpg</file>
+        <file>resource1/20220527194528.jpg</file>
+        <file>resource1/20220527194453.jpg</file>
+        <file>resource1/20220527222135.jpg</file>
+    </qresource>
+</RCC>
