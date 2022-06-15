@@ -31,27 +31,30 @@ void start::paintEvent(QPaintEvent* event)
 
 void start::on_pushButton_clicked()
 {
-    MainWindow* first=new MainWindow();
-    first->setpath(":/new/prefix1/resource1/20220527194540.jpg");
+    MainWindow* first=new MainWindow(1);
+    first->setpath(":/new/prefix1/resource1/20220615141656.jpg");
     first->setWindowTitle("第一关 程设期中考试");
     first->show();
+    first->addWayPoint1();
 }
 
 
 void start::on_pushButton_2_clicked()
 {
-    MainWindow* second=new MainWindow();
+    MainWindow* second=new MainWindow(2);
     second->setpath(":/new/prefix1/resource1/20220527194453.jpg");
     second->setWindowTitle("第二关 魔兽世界大作业");
     second->show();
+    second->addWayPoint2();
 }
 
 
 void start::on_pushButton_3_clicked()
 {
-    MainWindow* third=new MainWindow();
+    MainWindow* third=new MainWindow(3);
     third->setpath(":/new/prefix1/resource1/20220527194528.jpg");
     third->setWindowTitle("第三关 QT大作业");
     third->show();
+    third->addWayPoint3();
 }
 

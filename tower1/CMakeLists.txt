@@ -23,6 +23,22 @@ set(PROJECT_SOURCES
         start.h
         start.cpp
         start.ui
+        waypoint.h
+        waypoint.cpp
+        towerposition.h
+        towerposition.cpp
+        auxiliary_function.h
+        bullet.h
+        bullet.cpp
+        defend_tower.h
+        defend_tower.cpp
+        enemy.h
+        enemy.cpp
+        selectbutton.h
+        selectbutton.cpp
+        selectbutton2.h
+        selectbutton2.cpp
+
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
