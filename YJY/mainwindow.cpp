@@ -2,11 +2,7 @@
 #include "./ui_mainwindow.h"
 #include <QPainter>
 #include <QSize>
-#include <QList>
-#include "towerposition.h"
 #include "waypoint.h"
-#include "selectbutton.h"
-#include "selectbutton2.h"
 
 MainWindow::MainWindow(int lev,QWidget *parent)
     : QMainWindow(parent)
@@ -312,45 +308,45 @@ void MainWindow::loadTowerPosition3()
         m_towerPositionList.push_back(pos[i]);
     }
 }
+bool MainWindow::loadWaves()//本部分还需进一步编写
+{
+    if(m_waves>=6) return false;
 
-bool MainWindow::canBuyTower(int i)
-{//依据具体金额再做修改
-    if(m_playerGlod>=400)
+    int enemyStartInterval1[]={100,500,600,1000,3000,6000};//限于下面的循环，只能出6个，这个数目也是可以调整的
+    int enemyStartInterval2[]={100,800,2000,4000,10000,20000};
+    for(int i=0;i<6;++i)
     {
-        return true;
+        wayPoint * startWayPoint;
+        if(getPath()==":/images/background4.jpg") //最后有三条航线
+        {
+            int a=rand()%100;
+            if(a<50)
+            {
+                startWayPoint=m_wayPointList.first();
+            }
+            if(a>=50)
+            {
+               startWayPoint=m_wayPointList[7];
+            }
+        }
+        else
+        {
+            startWayPoint=m_wayPointList.first();
+        }
+        Enemy * enemy=new Enemy(startWayPoint,this);
+        //Boss* enemy=new Boss(startWayPoint,this);
+        m_enemyList.push_back(enemy);
+        enemy->reSetHp(40+60*(0+m_waves));//波数增加，怪物的血量增加，一次加20点
+        enemy->reSetSpeed(m_waves/2+1);
+        switch (m_waves)
+        {
+        case 0:
+            QTimer::singleShot(enemyStartInterval1[i],enemy,SLOT(doActive()));break;
+        case 1:
+            QTimer::singleShot(enemyStartInterval2[i],enemy,SLOT(doActive()));break;
+        default:
+            QTimer::singleShot(enemyStartInterval2[i],enemy,SLOT(doActive()));break;
+        }
     }
-    return false;
-}
-
-void MainWindow::removeButton(selectButton *button)
-{
-    m_selectButtonList.removeOne(button);
-}
-
-void MainWindow::removeTower(Defend_Tower *tower)
-{
-    m_towerList.removeOne(tower);
-}
-
-void MainWindow::removeButton2(selectButton2 *button)
-{
-    m_selectButton2List.removeOne(button);
-}
-
-bool MainWindow::canUpdate1()
-{
-    if(m_playerGlod>=300)//后续可做调整
-    {
-        return true;
-    }
-    return false;
-}
-
-bool MainWindow::canUpdate2()
-{
-    if(m_playerGlod>=400)//后续视游戏效果做调整
-    {
-        return true;
-    }
-    return false;
+    return true;
 }
