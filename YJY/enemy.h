@@ -7,6 +7,8 @@
 #include <QPainter>
 #include <QSize>
 
+#include "waypoint.h"
+
 class MainWindow;
 class Tower;
 class QPainter;
@@ -16,7 +18,7 @@ class Enemy:public QObject
 {
     Q_OBJECT
 public:
-    Enemy(wayPoint * startPoint, MainWindow * game,QString path);
+    Enemy(wayPoint * startPoint, MainWindow * game,const QPixmap & pic);
     ~Enemy();
     void draw(QPainter * painter)const;
     void move();//敌人的移动
@@ -31,10 +33,8 @@ public:
     void getFrozen();//被防御塔定住
     void removeFrozen();//解除被定住负面状态
 
-
-    int getPhysicalRe();//获得物理抗击值
-    int getMagicalRe();//获得魔法抗击值
-
+    void reSetHp(int maxHp);
+    void reSetSpeed(int times);
 
 private slots:
     void doActive();//私有信号槽，敌人是否可以移动
@@ -51,8 +51,11 @@ private:
     MainWindow * e_game;//mainwindow的指针
     QPoint e_pos;//当前位置
     QString e_path;//图片路径
+    QPixmap e_pic;//
     QList<Tower *> e_attackerTowerList;//正在攻击该敌人的防御塔list
 
-    static const QSize m_fixedSize;
+    static const QSize e_fixedSize;
 };
+
 #endif // ENEMY_H
+
