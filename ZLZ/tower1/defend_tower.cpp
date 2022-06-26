@@ -1,25 +1,29 @@
 #include "defend_tower.h"
 #include "mainwindow.h"
+#include "auxiliary_function.h"
+#include "bullet.h"
+#include "enemy.h"
+
 #include <QPoint>
 #include <QPainter>
 #include <QString>
+#include <QPixmap>
+#include <QTimer>
+#include <QVector2D>
+#include <QtMath>
 
 const QSize Defend_Tower::t_picturesize(35,35);
 
-Defend_Tower::Defend_Tower(QPoint pos,MainWindow *game,int type,QString path)
-{
-    
+Defend_Tower::Defend_Tower(QPoint pos,MainWindow *game,int type, const QPixmap & sprite )
+{  
     t_pos=pos;
     t_game=game;
-    t_path=path;
-    
-    
+    t_sprite=sprite;
     //初始化属性
     t_type=type;//防御塔类型
     t_attackrange=70;//攻击范围
     t_attacking=0;//是否在攻击
     t_level=1;//防御塔等级
-    
     if(type==1)
     {
         t_damage=10;//防御塔的攻击力
@@ -54,9 +58,6 @@ Defend_Tower::Defend_Tower(QPoint pos,MainWindow *game,int type,QString path)
     }
     t_fireRateTime=new QTimer(this);
     connect(t_fireRateTime,SIGNAL(timeout()),this,SLOT(shootWeapon()));
-    
-    
-    
 }
 
 Defend_Tower::~Defend_Tower()
@@ -72,8 +73,6 @@ void Defend_Tower::chooseEnemyFromAttack(Enemy* enemy)
 {
     t_attacker=enemy;
     AttackEnemy();
-    
-    
     t_attacker->getAttacked(this);
 }
 
@@ -147,9 +146,10 @@ Enemy* Defend_Tower::getAttackedEnemy()
 void Defend_Tower::draw(QPainter* painter)const
 {
     painter->save();
-    painter->setPen(Qt::red);
+    painter->setPen(Qt::red);//可以采用更漂亮的颜色哦
     painter->drawEllipse(t_pos,t_attackrange,t_attackrange);
-    painter->drawPixmap(t_pos.x()-t_picturesize.width()/2,t_pos.y()-t_picturesize.height()/2,t_path);
+    painter->drawText(QRect(this->m_pos.x()-30,this->m_pos.y()+15,100,25),QString("level: %1").arg(m_level));//把防御塔的等级画出来
+    painter->drawPixmap(t_pos.x()-t_picturesize.width()/2,t_pos.y()-t_picturesize.height()/2,t_sprite);
 }
 
 int Defend_Tower::getDamgae()//得到防御塔的攻击力
