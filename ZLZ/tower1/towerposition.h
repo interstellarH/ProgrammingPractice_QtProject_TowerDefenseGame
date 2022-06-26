@@ -12,9 +12,14 @@ class Defend_Tower;
 class TowerPosition
 {
 public:
-    TowerPosition(QPoint p,QString path=(":/new/prefix1/resource1/open_spot.png"));
+    TowerPosition(QPoint p, const QPixmap &sprite=(":/new/prefix1/resource1/open_spot.png"));
     QPoint getCenterPos();//获取坑位的中心点
     QPoint getleftPos();//获取坑位的左上点
+    int getWidth();
+    int getHeight();
+    Tower * get_tower();//得到私有成员tower
+    selectButton * getButton();//得到私有成员button
+    selectButton2 * getButton2();//得到私有成员button2
 
     bool ContainPos(QPoint pos);//判断某点是否在防御塔坑位的范围内
 
@@ -45,28 +50,26 @@ public:
     void sethasUpdate1(bool x);
     bool hasUpdate2();
     void sethasUpdate2(bool x);
+    bool m_hasTower;//这里为什么要放在public里面呢
+    
 
 private:
     QPoint m_pos;//防御塔坑点位
-    QString m_path;//图片路径
+    QPixmap m_sprite;//图片路径
+    
+    bool m_hasTower1;//类内定义变量的时候是不可以直接初始化的
+    bool m_hasTower2;
+    bool m_hasTower3;//是否有塔
 
-    bool m_hasTower=0;
-    bool m_hasTower1=0;
-    bool m_hasTower2=0;
-    bool m_hasTower3=0;//是否有塔
+    bool m_hasbutton;
+    selectButton* m_button;//选择防御塔的按钮
+    bool m_hasbutton2;
+    selectButton* m_button2;
 
-    bool m_hasbutton=0;
-    selectButton* m_button=NULL;//选择防御塔的按钮
+    bool m_update1;
+    bool m_update2;
 
-    bool m_hasbutton2=0;
-    selectButton* m_button2=NULL;
-
-    bool m_update1=0;
-    bool m_update2=0;
-
-    Defend_Tower* m_tower=NULL;
-
-
+    Defend_Tower* m_tower;
     static const QSize m_fixedSize;
 };
 
