@@ -6,16 +6,18 @@
 #include <QSize>
 #include <QString>
 #include <QTimer>
-
+#include "enemy.h"
+#include "mainwindow.h"
 
 class MainWindow;
 class QPainter;
 class Enemy;
+class QTimer;
 
 class Defend_Tower:QObject{
     Q_OBJECT
 public:
-    Defend_Tower(QPoint pos,MainWindow *game,int type,QString path=":/new/prefix1/resource1/defend_tower1.jpg");//文件路径记得更改
+    Defend_Tower(QPoint pos,MainWindow *game,int type,const QPixmap & sprite =":/new/prefix1/resource1/defend_tower1.jpg");//文件路径记得更改
     ~Defend_Tower();
     Defend_Tower();
 
@@ -42,28 +44,25 @@ public:
 
 private:
     QPoint t_pos;//防御塔中心点
-    QString t_path;//防御塔图片路径
+    QPixmap t_sprite;//防御塔图片路径
 
     int t_attackrange;//攻击范围
     static const QSize t_picturesize;//防御塔图片大小
     MainWindow * t_game;
-
 
     bool t_attacking;//是否在攻击
     int t_damage;//防御塔的攻击力
     double t_magical;//防御塔的破魔属性值
     int t_attackGroupRange;//群体攻击炮塔的爆炸范围or范围塔的定时范围 单体炮塔此项为0
     int t_fireRate;//射速or攻击间隔
-    int t_type;
+    int t_type;//防御塔的类型
     int t_level=1;//防御塔的等级
-    
-    
 
     Enemy *t_attacker;//正在攻击的敌人
     QTimer * t_fireRateTime;//开始攻击的计时器
 
-   private slots:
-       void shootWeapon();//实现和子弹类的连接
+private slots:
+    void shootWeapon();//实现和子弹类的连接
 
 };
 #endif // DEFEND_TOWER_H
