@@ -14,8 +14,8 @@ Bullet::Bullet(){
 }
 
 Bullet::Bullet(QPoint startPos,QPoint targetPos,Defend_Tower* tower,MainWindow * game,
-               QString path,int damage,int magical):
-               b_startPos(startPos),b_targetPos(targetPos),b_path(path),
+              const QPixmap & sprite,int damage,int magical):
+               b_startPos(startPos),b_targetPos(targetPos),b_sprite(sprite),
                b_tower(tower),b_game(game),b_damage(damage),b_magical(magical)
 {
     b_targetEnemy=tower->getAttackedEnemy();
@@ -154,11 +154,11 @@ void Frozen_Bullet::move(){
 
 void Frozen_Bullet::draw_Frozen(QPainter * painter)const{
     foreach(Enemy* enemy, b_targetEnemy){
-        painter->drawPixmap(enemy->getPos(),b_path);//在被冻住的敌人位置画上效果
+        painter->drawPixmap(enemy->getPos(),b_path);//在被冻住的敌人位置画上效果（贴上冻图）
     }
 
     painter->setPen(QColor(177,220,245));//设置画笔颜色
-    int x=b_startPos.x(),y=b_startPos.y();//圆心的位置
+    int x=b_startPos.x(),y=b_startPos.y();//圆心的位置 修正一下，这里是rect左上角点的坐标
     int r1 = (double)(b_CurTime%1000)/1000.0*b_range;//三个圆圈形成波浪的效果呈现范围
     int r2 = (double)((b_CurTime-333)%1000)/1000.0*b_range;
     int r3 = (double)((b_CurTime-667)%1000)/1000.0*b_range;
