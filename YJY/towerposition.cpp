@@ -122,6 +122,7 @@ void TowerPosition::setRemoveTower()
     setHasTowers[1](false);
     setHasTowers[2](false);
     setHasTowers[3](false);
+    sethasTowers[4](false);
     setHasUpdate1(false);
     setHasUpdate2(false);
 }
