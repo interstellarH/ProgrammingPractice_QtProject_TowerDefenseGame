@@ -3,17 +3,18 @@
 
 #include <QMainWindow>
 #include <QPaintEvent>
+#include <QMouseEvent>
+#include <QString>
+#include <QPainter>
 
-/*#include "selectbutton.h"
-#include "selectbutton2.h"
 #include "waypoint.h"
 #include "towerposition.h"
+#include "defend_tower.h"
 #include "enemy.h"
 #include "bullet.h"
 #include "auxiliary_function.h"
-#include "defend_tower.h"
 #include "selectbutton.h"
-#include "selectbutton2.h"*/
+#include "selectbutton2.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -36,8 +37,10 @@ public:
     ~MainWindow();
 
     void paintEvent(QPaintEvent*);
+    
     QString getpath();
     void setpath(QString path);
+    
     void addWayPoint1();
     void addWayPoint2();
     void addWayPoint3();//用来添加航点的函数,分别为三个关卡绘制航点
@@ -45,8 +48,13 @@ public:
     void loadTowerPosition1();
     void loadTowerPosition2();
     void loadTowerPosition3();//加载防御塔坑位
-
-
+    
+    void awardGold();
+    void drawHp(QPainter * painter)const;
+    void drawGold(QPainter * painter)const;
+    void drawWaves(QPainter * painter)const;
+    void doGameOver();
+    
     void getHp();//获取玩家当前血量的函数
     void getHpHurted();//敌人抵达终点，玩家扣血
     void removeEnemy(Enemy *enemy);//敌人死亡之后触发
@@ -63,7 +71,6 @@ public:
 
     bool canBuyTower(int i);//判断是否可以买第i种塔
     void removeButton(selectButton * button);//在mainwindow中对button进行移除
-
     void removeButton2(selectButton2 * button);//在mainwindow中对button2进行移除
     void removeTower(Defend_Tower * tower);
 
