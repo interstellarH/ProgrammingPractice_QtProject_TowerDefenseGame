@@ -6,11 +6,15 @@
 #include <QRect>
 #include <QSize>
 
+#include "mainwindow.h"
+#include "defend_tower.h"
+
 class MainWindow;
 class Defend_Tower;
 
 class selectButton2
 {
+    Q_OBJECT
 public:
     selectButton2(QPoint pos,MainWindow * game);
     ~selectButton2();
