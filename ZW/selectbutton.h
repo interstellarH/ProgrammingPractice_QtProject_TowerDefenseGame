@@ -5,7 +5,9 @@
 #include <QString>
 #include <QPoint>
 #include <QSize>
+#include <QObject>
 
+#include "mainwindow.h"
 
 class MainWindow;
 
@@ -16,7 +18,7 @@ public:
     ~selectButton();
 
     void draw(QPainter * painter)const;//绘画选择框
-    void getRemoved();//选择框被点击了以后，就要被移除
+    void getRemoved();//选择框被点击了以后，就要被移除// 但是点击其他部分也应该被移除，否则如果是误点呢？就会一直停在画面上
     bool containPos(QPoint pos);//判断鼠标的点击点，是否在选择框的内部
     QPoint getPos();//得到选择框的左上角
 private:
