@@ -1,13 +1,13 @@
 #include "selectbutton.h"
 #include "mainwindow.h"
 
-const QSize selectButton::m_fixedSize(105,35);
-
+const QSize selectButton::m_fixedSize(140,35);//这个是在containPos里面用到，如果是四张图的话，长度不是105
+//不过这里还要考虑到图片大小呀，咱们的图片不一定都是35*35的，所以后期可以再改
 selectButton::selectButton(QPoint pos,MainWindow * game):
     s_game(game),
     s_pos(pos)
 {
-    //三张图片的路径信息
+    //四种塔的图片路径信息
     s_selectBoxImagePath[0]=":/images/tower1.jpg";
     s_selectBoxImagePath[1]=":/images/tower2.png";
     s_selectBoxImagePath[2]=":/images/tower3.png";
@@ -22,10 +22,10 @@ selectButton::~selectButton()
 void selectButton::draw(QPainter *painter) const
 {
     painter->save();
-    painter->drawPixmap(s_pos.x(),s_pos.y(),s_selectBoxImagePath[0]);
-    painter->drawPixmap(s_pos.x()+70,s_pos.y(),s_selectBoxImagePath[1]);
-    painter->drawPixmap(s_pos.x(),s_pos.y()+70,s_selectBoxImagePath[2]);
-    painter->drawPixmap(s_pos.x()+70,s_pos.y()+70,s_selectBoxImagePath[3]);
+    painter->drawPixmap(s_pos.x(),s_pos.y(),s_selectBoxImagePath[0]);//改成排在一条直线上了
+    painter->drawPixmap(s_pos.x()+35,s_pos.y(),s_selectBoxImagePath[1]);
+    painter->drawPixmap(s_pos.x()+70,s_pos.y(),s_selectBoxImagePath[2]);
+    painter->drawPixmap(s_pos.x()+105,s_pos.y(),s_selectBoxImagePath[3]);
     painter->restore();
 }
 
