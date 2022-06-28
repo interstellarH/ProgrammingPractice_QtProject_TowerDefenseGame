@@ -661,7 +661,7 @@ void MainWindow::mousePressEvent(QMouseEvent * event)
             {
                 it->setHasButton2(true);
                 QPoint tmp(it->getPos().x()+35,it->getPos().y());//我是把防御塔坑的右上顶点当作button2的端点
-                selectButton2* button2=new selectButton2(tmp,this,100,50);//这里之前有一个小笔误
+                selectButton2* button2=new selectButton2(tmp,this);//这里之前有一个小笔误
                 button2->setTower(it->get_tower());//我写这个setTower()的目的是得到防御塔的等级，不同等级的updatecost不一样，具体的你可以看button2的draw方法
                 m_selectButton2List.push_back(button2);
                 it->setButton2(button2);
