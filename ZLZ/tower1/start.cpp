@@ -57,4 +57,3 @@ void start::on_pushButton_3_clicked()
     third->show();
     third->addWayPoint3();
 }
-

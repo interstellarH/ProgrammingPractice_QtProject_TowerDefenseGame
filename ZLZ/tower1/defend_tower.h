@@ -6,8 +6,7 @@
 #include <QSize>
 #include <QString>
 #include <QTimer>
-#include "enemy.h"
-#include "mainwindow.h"
+#include <QPixmap>
 
 class MainWindow;
 class QPainter;
@@ -17,7 +16,7 @@ class QTimer;
 class Defend_Tower:QObject{
     Q_OBJECT
 public:
-    Defend_Tower(QPoint pos,MainWindow *game,int type,const QPixmap & sprite =":/new/prefix1/resource1/defend_tower1.jpg");//文件路径记得更改
+    Defend_Tower(QPoint pos,MainWindow *game,int type);//文件路径记得更改
     ~Defend_Tower();
     Defend_Tower();
 
@@ -36,15 +35,18 @@ public:
 
     //升级与拆除
     void reSetDamage(int damage);//重新设置攻击力
-    int getDamgae();//得到防御塔的攻击力
+    int getDamage();//得到防御塔的攻击力
+    double getMagical();
     void levelChange();//防御塔升级
     int getLevel();//得到防御塔的等级
+    int get_attackGroupRange();//获得群体攻击范围
 
     void getRemoved();//防御塔被移除
 
+    QPoint getpos();//获取防御塔中心点
 private:
     QPoint t_pos;//防御塔中心点
-    QPixmap t_sprite;//防御塔图片路径
+    QPixmap t_sprite = QPixmap(":/new/prefix1/resource1/defend_tower1.jpg");//防御塔图片路径
 
     int t_attackrange;//攻击范围
     static const QSize t_picturesize;//防御塔图片大小
