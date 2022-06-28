@@ -1,4 +1,4 @@
-#include "towerposition.h"
+##include "towerposition.h"
 #include "selectbutton.h"
 
 #include <QSize>
@@ -8,9 +8,9 @@
 const QSize TowerPosition::m_fixedSize(35,35);
 TowerPosition::TowerPosition(QPoint pos):
     m_hasTower(false),
-    m_hasButton(false),
-    m_hasButton2(false),
-    m_pos(pos)
+    m_pos(pos),
+    m_hasbutton(false),
+    m_hasbutton2(false)
 {
     m_sprite=QPixmap(":images/towerpos3.png");
     m_hasTowers[1]=false;
@@ -27,7 +27,7 @@ bool TowerPosition::hasTower()
 void TowerPosition::sethasTowers(int i, bool x)
 {
     m_hasTowers[i]=x;
-    setHasTower(x);
+    sethasTower(x);
 }
 
 bool TowerPosition::hasTowers(int i)
@@ -55,12 +55,12 @@ bool TowerPosition::hasButton2()
     return m_hasbutton2;
 }
 
-selectButton* TowerPosition::getButton2()
+selectButton2* TowerPosition::getButton2()
 {
     return m_button2;
 }
 
-void TowerPosition::setButton2(selectButton* x)
+void TowerPosition::setButton2(selectButton2* x)
 {
     m_button2=x;
 }
@@ -117,12 +117,12 @@ void TowerPosition::draw(QPainter* painter)const
 
 void TowerPosition::setRemoveTower()
 {
-    setTower(NULL);
-    setHasTower(false);
-    setHasTowers[1](false);
-    setHasTowers[2](false);
-    setHasTowers[3](false);
-    sethasTowers[4](false);
-    setHasUpdate1(false);
-    setHasUpdate2(false);
+    sethasTower(NULL);
+    sethasTower(false);
+    sethasTowers(1,false);
+    sethasTowers(2,false);
+    sethasTowers(3,false);
+    sethasTowers(4,false);
+    sethasUpdate1(false);
+    sethasUpdate2(false);
 }
