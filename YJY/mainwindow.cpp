@@ -64,7 +64,7 @@ void MainWindow::updateMap()
 {
     foreach(Enemy * enemy,m_enemyList)
         enemy->move();
-    foreach(Defend_Tower* tower,m_towerList)
+    foreach(Defend_Tower * tower,m_towerList)
         tower->checkEnemyInRange();
     update();
 }
@@ -527,6 +527,7 @@ void MainWindow::drawWaves(QPainter *painter) const
     painter->save();
     painter->setPen(Qt::red);//这里具体的参数确定了位置
     painter->drawText(QRect(500,5,100,25),QString("WAVES: %1").arg(m_waves+1));
+    painter->drawPixmap(450,5,25,25,wave_sprite);
     painter->restore();
 }
 
@@ -534,7 +535,8 @@ void MainWindow::drawHp(QPainter *painter) const
 {
     painter->save();
     painter->setPen(Qt::red);
-    painter->drawText(QRect(30,5,100,25),QString("HP: %1").arg(m_playerHp));
+    painter->drawText(QRect(50,5,100,25),QString("HP: %1").arg(m_playerHp));
+    painter->drawPixmap(10,5,25,25,Hp_sprite);
     painter->restore();
 }
 
@@ -543,6 +545,8 @@ void MainWindow::drawGold(QPainter *painter) const
     painter->save();
     painter->setPen(Qt::red);
     painter->drawText(QRect(300,5,100,25),QString("GOLD: %1").arg(m_playerGold));
+    painter->drawPixmap(10,5,25,25,Hp_sprite);
+    painter->restore();//为何这个之前并没有写
 }
 
 bool MainWindow::loadWaves()
@@ -558,22 +562,8 @@ bool MainWindow::loadWaves()
     for(int i=0;i<6;++i)
     {
         wayPoint * startWayPoint;
-        if(getPath()==":/images/background4.jpg") //随机从两边进入
-        {
-            int a=rand()%100;
-            if(a<50)
-            {
-                startWayPoint=m_wayPointList.first();
-            }
-            if(a>=50)
-            {
-               startWayPoint=m_wayPointList[7];
-            }
-        }
-        else
-        {
-            startWayPoint=m_wayPointList.first();
-        }
+        startWayPoint=m_wayPointList.first();
+
         Enemy * enemy=new Enemy(startWayPoint,this);
         //Boss* enemy=new Boss(startWayPoint,this);
         m_enemyList.push_back(enemy);
@@ -582,23 +572,19 @@ bool MainWindow::loadWaves()
         enemy->reSetSpeed(m_waves/2+1);
 
         if(m_waves==0||m_waves==3) QTimer::singleShot(enemyStartInterval1[i],enemy,SLOT(doActive()));
-        else if(m_waves==1||m_waves==4) QTimer::singleShot(enemyStartInterval2[i],enemy,SLOT(doActive()));
+        else if(m_waves==1||m_waves==4) QTimer::singleShot(enemyStartInterval2[i],enemy,SLOT(doActive()));//纠正了等于号写成赋值号的问题
         else if(m_waves==2||m_waves==5) QTimer::singleShot(enemyStartInterval3[i],enemy,SLOT(doActive()));
     }
     return true;
 }
 
-void MainWindow::build_tower(int i,QList<TowerPosition>::Iterator it)//i代表塔的类型（记得回.h文件中添加这一部分）
+void MainWindow::build_tower(int i,QList<TowerPosition>::iterator it)//i代表塔的类型 //这里iterator的i是小写
 {
-    QString paths={};//把用到的四种塔路径放在这里
-
     if(canBuyTower(i))
     {
         it->sethasTowers(i,true);
         m_playerGold-=tower1Cost;
-        QString path=paths[i];
-        Defend_Tower * tower=new Defend_Tower(it->getPos(),this,i,path);//四个参数，分别是防御塔的中心点；主界面；防御塔图片路径；防御塔的攻击力。其实这里还可以有很多的发挥，比如防御塔的攻击速度也放在构造函数的参数中
-        //最后一个攻击力参数我修改成和i有关的了
+        Defend_Tower * tower=new Defend_Tower(it->centerPos(),this,i);//四个参数，分别是防御塔的中心点；主界面；防御塔类型。
         it->setTower(tower);
         m_towerList.push_back(tower);
         update();
@@ -624,7 +610,7 @@ void MainWindow::mousePressEvent(QMouseEvent * event)
                 break;
             }
             //下面的判断语句，要先判断hasbutton2，不能先判断containPos.因为如果没有button2，在进入这个判断框的时候，会先getbutton2，但是button2是NULL，程序会异常结束。
-            else if(it->hasButton2() && it->getButton2()->containPos(pressPos) && !it->hasButton() && !it->ContainPos(pressPos) &&it->hasTower())
+            else if(it->hasButton2() && it->getButton2()->containPos(pressPos) && !it->hasButton() && !it->containPos(pressPos) &&it->hasTower())
             {//在有button2的情况下，点击button2的内部
                 if(pressPos.y()<(it->getButton2()->getPos().y()+25))//我直接设置了第一个选择框的height是25，这里就直接用25了
                 //通过y坐标来实现判断到底是摁remove还是upgrade
@@ -690,7 +676,7 @@ void MainWindow::mousePressEvent(QMouseEvent * event)
             {
                 it->setHasButton2(true);
                 QPoint tmp(it->getPos().x()+35,it->getPos().y());//我是把防御塔坑的右上顶点当作button2的端点
-                selectButton2 -* button2=new selectButton2(tmp,this,100,50);
+                selectButton2* button2=new selectButton2(tmp,this,100,50);//这里之前有一个小笔误
                 button2->setTower(it->get_tower());//我写这个setTower()的目的是得到防御塔的等级，不同等级的updatecost不一样，具体的你可以看button2的draw方法
                 m_selectButton2List.push_back(button2);
                 it->setButton2(button2);
