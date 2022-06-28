@@ -64,12 +64,12 @@ bool TowerPosition::hasButton2()
     return m_hasbutton2;
 }
 
-selectButton* TowerPosition::getButton2()
+selectButton2* TowerPosition::getButton2()
 {
     return m_button2;
 }
 
-void TowerPosition::setButton2(selectButton* x)
+void TowerPosition::setButton2(selectButton2* x)
 {
     m_button2=x;
 }
