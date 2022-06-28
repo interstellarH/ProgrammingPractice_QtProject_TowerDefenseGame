@@ -129,5 +129,13 @@ void Enemy::reSetSpeed(int times)
     e_speed*=times;
 }
 
+int getPhysicalRe()//获得物理抗击值
+{
+    return e_physicalRe;
+}
 
+int getMagicalRe()//获得魔法抗击值
+{
+    return e_magicalRe;
+}
 
