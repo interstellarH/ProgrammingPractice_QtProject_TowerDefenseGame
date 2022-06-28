@@ -6,13 +6,13 @@
 #include <QPixmap>
 
 const QSize TowerPosition::m_fixedSize(35,35);
-TowerPosition::TowerPosition(QPoint pos,QPixmap & sprite):
+TowerPosition::TowerPosition(QPoint pos):
     m_hasTower(false),
     m_hasButton(false),
     m_hasButton2(false),
-    m_pos(pos),
-    m_sprite(sprite)
+    m_pos(pos)
 {
+    m_sprite=":images/towerpos3.png";
     m_hasTowers[1]=false;
     m_hasTowers[2]=false;
     m_hasTowers[3]=false;
