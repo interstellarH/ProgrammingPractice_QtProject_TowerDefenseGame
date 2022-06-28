@@ -48,7 +48,7 @@ private:
     int e_currentHp;//当前血量
     int e_physicalRe;//物理抗击
     int e_magicalRe;//魔法抗击
-    int e_speed;//移动速度
+    double e_speed;//移动速度
     bool e_active;//是否可以移动
 
     wayPoint * e_destinationWayPoint;//目标航点的指针
