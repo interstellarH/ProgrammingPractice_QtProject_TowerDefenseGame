@@ -6,18 +6,19 @@
 #include <QString>
 #include "selectbutton.h"
 #include "defend_tower.h"
+#include "selectbutton2.h"
 
 class Defend_Tower;
 
 class TowerPosition
 {
 public:
-    TowerPosition(QPoint p, const QPixmap &sprite=(":/new/prefix1/resource1/open_spot.png"));
+    TowerPosition(QPoint p);
     QPoint getCenterPos();//获取坑位的中心点
     QPoint getleftPos();//获取坑位的左上点
     int getWidth();
     int getHeight();
-    Tower * get_tower();//得到私有成员tower
+    Defend_Tower * get_tower();//得到私有成员tower
     selectButton * getButton();//得到私有成员button
     selectButton2 * getButton2();//得到私有成员button2
 
@@ -31,12 +32,10 @@ public:
 
     bool hasButton();//判断该位置是否有button
     void setHasButton(bool hasbutton=1);//设置有无button
-    selectButton* getButton();
     void setButton(selectButton* x);
 
     bool hasButton2();//判断该位置是否有button
     void setHasButton2(bool hasbutton=1);//设置有无button
-    selectButton2* getButton2();
     void setButton2(selectButton* x);
 
     bool hasTowers(int i);
@@ -59,7 +58,7 @@ private:
     bool m_hasbutton;
     selectButton* m_button;//选择防御塔的按钮
     bool m_hasbutton2;
-    selectButton2* m_button2;
+    selectButton* m_button2;
 
     bool m_update1;
     bool m_update2;
