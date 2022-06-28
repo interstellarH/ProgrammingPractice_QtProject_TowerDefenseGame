@@ -1,7 +1,5 @@
 #ifndef AUXILIARY_FUNCTION_H
 #define AUXILIARY_FUNCTION_H
-
-#endif // AUXILIARY_FUNCTION_H
 #include <QPoint>
 #include <cmath>
 
@@ -16,3 +14,4 @@ inline bool collisionWithCircle(QPoint p1,int r1,QPoint p2,int r2)
     }
     return false;
 }
+#endif // AUXILIARY_FUNCTION_H
