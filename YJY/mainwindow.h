@@ -77,8 +77,7 @@ public:
     bool canUpdate1();//判断是否可以第一次升级
     bool canUpdate2();//判断是否可以第二次升级
     
-    
-    void build_tower(int i, QList<TowerPosition>::Iterator it);//建塔
+    void build_tower(int i,QList<TowerPosition>::iterator it);//建塔
 
 private:
     Ui::MainWindow *ui;
