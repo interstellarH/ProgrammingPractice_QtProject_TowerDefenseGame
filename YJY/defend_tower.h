@@ -39,6 +39,7 @@ public:
     int getDamgae();//得到防御塔的攻击力
     void levelChange();//防御塔升级
     int getLevel();//得到防御塔的等级
+    int get_attackGroupRange();//获得群体攻击范围
 
     void getRemoved();//防御塔被移除
 
