@@ -13,12 +13,12 @@
 Bullet::Bullet(){
 }
 
-Bullet::Bullet(QPoint startPos,QPoint targetPos,Defend_Tower* tower,MainWindow * game,
-               QString path,int damage,int magical):
-               b_startPos(startPos),b_targetPos(targetPos),b_path(path),
+Bullet::Bullet(QPoint startPos,QPoint targetPos,Defend_Tower* tower,MainWindow * game,,int damage,int magical):
+               b_startPos(startPos),b_targetPos(targetPos),
                b_tower(tower),b_game(game),b_damage(damage),b_magical(magical)
 {
     b_targetEnemy=tower->getAttackedEnemy();
+    b_sprite=":/resources/bullet.png";
 }
 
 QPoint Bullet::getCurrentPos()
@@ -44,78 +44,67 @@ void Bullet::move()
 
 void Bullet::hitTarget()
 {
-    QList<Enemy*> enemylist;
-    enemylist.append(b_tower->getAttackedEnemy());
-    foreach(Enemy* attack_enemy, b_game->getEnemyList()){
-        if(attack_enemy==b_tower->getAttackedEnemy())continue;
-        if(collisionWithCircle(attack_enemy->getPos(),b_tower->get_attackGroupRange(),b_targetPos,0)){
-            enemylist.append(attack_enemy);
+    if(b_game->getEnemyList().indexOf(b_targetEnemy.front())!=-1)//如果mainwindow的敌人列表中，有子弹击中的这个敌人，该敌人受到相应的伤害
+    {
+        while(!b_targetEnemy.empty()){//设置物理攻击和魔法攻击的区别
+            int harm;
+            if(b_damage){
+                harm = b_damage-b_targetEnemy.front()->getPhysicalRe();
+                b_targetEnemy.front()->getDamaged(harm);
+            }
+            else{
+                harm = b_magical-b_targetEnemy.front()->getMagicalRe();
+                b_targetEnemy.front()->getDamaged(harm);
+            }
+            b_targetEnemy.pop_front();
         }
-    }
-    while(!enemylist.empty()){//设置物理攻击和魔法攻击的区别
-        int harm;
-        if(b_damage){
-             harm = enemylist.front()->getPhysicalRe();
-            enemylist.front()->getDamaged(harm);
-        }
-        else{
-            harm = enemylist.front()->getMagicalRe();
-            enemylist.front()->getDamaged(harm);
-        }
-        enemylist.pop_front();
     }
     b_game->removeBullet(this);//击中敌人后子弹就要消失
 }
 
 void Bullet::draw(QPainter *painter) const
 {
-    painter->drawPixmap(b_currentPos,b_path);
+    painter->drawPixmap(b_currentPos,b_sprite);
 }
 
 Physical_Bullet::Physical_Bullet(QPoint startPos,QPoint targetPos,Defend_Tower* tower,
-                                 MainWindow * game,QString path):
-                                 Bullet(startPos, targetPos, tower, game, path,
-                                        tower->get_damage())
+                                 MainWindow * game):
+                                 Bullet(startPos, targetPos, tower, game, tower->get_damage(),0)
 {
+    b_sprite=QPixmap(":/resources/bullet.png");
 }
 
-
 Magical_Bullet::Magical_Bullet(QPoint startPos,QPoint targetPos,Defend_Tower* tower,
-                               MainWindow * game,QString path):
-                               Bullet(startPos, targetPos, tower, game, path,
-                                      0, tower->get_magical())
+                               MainWindow * game):
+                               Bullet(startPos, targetPos, tower, game,0 ,tower->get_magical())//0 represents physical damage
 {
+    b_sprite=QPixmap(":/resources/magic4.png");
 }
 
 Physical_Explosion::Physical_Explosion(QPoint startPos,QPoint targetPos,Defend_Tower* tower,
-                                       MainWindow * game,QString path):
-                                       Bullet(startPos, targetPos, tower, game, path,
-                                       tower->get_damage())
+                                       MainWindow * game):
+                                       Bullet(startPos, targetPos, tower, game,tower->get_damage(),0)
 {
     b_range=tower->get_attackGroupRange();
+    b_explodePath=QPixmap(":/resources/bomb1.jpg");
 }
 
 void Physical_Explosion::hitTarget()
 {
-    QList<Enemy*> enemylist;
-    enemylist.append(b_targetEnemy);
-    foreach(Enemy* attack_enemy, b_game->getEnemyList()){
-        if(attack_enemy==b_tower->getAttackedEnemy())continue;
-        if(collisionWithCircle(attack_enemy->getPos(),b_tower->get_attackGroupRange(),b_targetPos,0)){
-            enemylist.append(attack_enemy);
+    if(b_game->getEnemyList().indexOf(b_targetEnemy.front())!=-1)//如果mainwindow的敌人列表中，有子弹击中的这个敌人，该敌人受到相应的伤害
+    {
+        while(!b_targetEnemy.empty()){//设置物理攻击和魔法攻击的区别
+            int harm;
+            if(b_damage){
+                harm = b_damage-b_targetEnemy.front()->getPhysicalRe();
+                b_targetEnemy.front()->getDamaged(harm);
+            }
+            else{
+                harm = b_magical-b_targetEnemy.front()->getMagicalRe();
+                b_targetEnemy.front()->getDamaged(harm);
+            }
+            b_targetEnemy.pop_front();
         }
-    }
-    while(!enemylist.empty()){//设置物理攻击和魔法攻击的区别
-        int harm;
-        if(b_damage){
-             harm = enemylist.front()->getPhysicalRe();
-            enemylist.front()->getDamaged(harm);
-        }
-        else{
-            harm = enemylist.front()->getMagicalRe();
-            enemylist.front()->getDamaged(harm);
-        }
-        enemylist.pop_front();
     }
     b_game->removeBullet(this);//击中敌人后子弹就要消失
     b_game->addPoint(this,1);//同时将最终运动的位置添加至list1中
@@ -146,10 +135,11 @@ void Physical_Explosion::drawExplosion(QPainter *painter)const{
     painter->drawPixmap(b_targetPos,b_explodePath);
 }
 
-Frozen_Bullet::Frozen_Bullet(QPoint startpos,Defend_Tower* tower,MainWindow * game,QString path,int time):
-    Bullet(startpos,QPoint(NULL,NULL),tower,game,path){
+Frozen_Bullet::Frozen_Bullet(QPoint startpos,Defend_Tower* tower,MainWindow * game,int time):
+    Bullet(startpos,QPoint(NULL,NULL),tower,game){
     b_FrozenTime = time;
     b_range = tower->get_attackGroupRange();
+    b_sprite=QPixmap(":/resources/Iceball.png");
 }
 
 void Frozen_Bullet::move(){
@@ -163,20 +153,11 @@ void Frozen_Bullet::move(){
 }
 
 void Frozen_Bullet::draw_Frozen(QPainter * painter)const{
-    QList<Enemy*> enemylist;
-    enemylist.append(b_targetEnemy);
-    foreach(Enemy* attack_enemy, b_game->getEnemyList()){
-        if(attack_enemy==b_tower->getAttackedEnemy())continue;
-        if(collisionWithCircle(attack_enemy->getPos(),b_tower->get_attackGroupRange(),b_targetPos,0)){
-            enemylist.append(attack_enemy);
-        }
+    foreach(Enemy* enemy, b_targetEnemy){
+        painter->drawPixmap(enemy->getPos,b_sprite);//在被冻住的敌人位置画上效果（贴上冻图）
     }
-    foreach(Enemy* enemy, enemylist){
-        painter->drawPixmap(enemy->getPos(),b_path);//在被冻住的敌人位置画上效果
-    }
-
     painter->setPen(QColor(177,220,245));//设置画笔颜色
-    int x=b_startPos.x(),y=b_startPos.y();//圆心的位置
+    int x=b_startPos.x(),y=b_startPos.y();//圆心的位置 修正一下，这里是rect左上角点的坐标
     int r1 = (double)(b_CurTime%1000)/1000.0*b_range;//三个圆圈形成波浪的效果呈现范围
     int r2 = (double)((b_CurTime-333)%1000)/1000.0*b_range;
     int r3 = (double)((b_CurTime-667)%1000)/1000.0*b_range;
