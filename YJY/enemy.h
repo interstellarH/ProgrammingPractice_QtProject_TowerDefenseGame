@@ -18,7 +18,7 @@ class Enemy:public QObject
 {
     Q_OBJECT
 public:
-    Enemy(wayPoint * startPoint, MainWindow * game,const QPixmap & pic);
+    Enemy(wayPoint * startPoint, MainWindow * game,int type);
     ~Enemy();
     void draw(QPainter * painter)const;
     void move();//敌人的移动
@@ -32,7 +32,7 @@ public:
 
     void getFrozen();//被防御塔定住
     void removeFrozen();//解除被定住负面状态
-    
+
     int getPhysicalRe();//获得物理抗击值
     int getMagicalRe();//获得魔法抗击值
 
@@ -43,6 +43,7 @@ private slots:
     void doActive();//私有信号槽，敌人是否可以移动
 
 private:
+    int e_type;//怪兽类型，从1到n
     int e_maxHp;//最大血量
     int e_currentHp;//当前血量
     int e_physicalRe;//物理抗击
@@ -53,12 +54,10 @@ private:
     wayPoint * e_destinationWayPoint;//目标航点的指针
     MainWindow * e_game;//mainwindow的指针
     QPoint e_pos;//当前位置
-    QString e_path;//图片路径
-    QPixmap e_pic;//
+    QPixmap e_sprite;//
     QList<Tower *> e_attackerTowerList;//正在攻击该敌人的防御塔list
 
     static const QSize e_fixedSize;
 };
 
 #endif // ENEMY_H
-
