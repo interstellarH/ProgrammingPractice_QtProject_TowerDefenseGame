@@ -1,4 +1,4 @@
-##include "towerposition.h"
+#include "towerposition.h"
 #include "selectbutton.h"
 
 #include <QSize>
