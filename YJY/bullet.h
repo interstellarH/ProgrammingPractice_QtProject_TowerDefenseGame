@@ -7,6 +7,8 @@
 #include <QPainter>
 #include <QString>
 #include <QSize>
+#include <QPixmap>
+
 
 class Enemy;
 class MainWindow;
@@ -19,8 +21,7 @@ class Bullet :public QObject
     Q_PROPERTY(QPoint m_currentPos READ getCurrentPos WRITE setCurrentPos)//子弹动态移动
 public:
     Bullet();
-    Bullet(QPoint startPos,QPoint targetPos,Defend_Tower* tower,MainWindow * game,
-           QString path,int damage = 0, int magical = 0);
+    Bullet(QPoint startPos,QPoint targetPos,Defend_Tower* tower,MainWindow * game,int damage = 0, int magical = 0);
     QPoint getCurrentPos();//得到子弹的当前位置
     void setCurrentPos(QPoint pos);//设置子弹的当前位置
 
@@ -35,8 +36,10 @@ protected:
     QPoint b_targetPos;
     QPoint b_currentPos;
 
-    QString b_path;
-    Enemy * b_targetEnemy;
+    QPixmap b_sprite;//图片路径
+
+    QList<Enemy *> b_targetEnemy;//与defend_tower中定义一致 第一个位置代表攻击中心点的敌人
+                                 //单体攻击则size为1，群体攻击则包含所有可攻击到的目标
     Defend_Tower* b_tower;
     MainWindow * b_game;
 
@@ -54,7 +57,7 @@ class Physical_Bullet:public Bullet
 
 public:
     Physical_Bullet(QPoint startPos,QPoint targetPos,Defend_Tower* tower,
-                    MainWindow * game,QString path);
+                    MainWindow * game);
 
 private:
 
@@ -67,8 +70,7 @@ class Magical_Bullet:public Bullet
 
 public:
     Magical_Bullet(QPoint startPos,QPoint targetPos,Defend_Tower* tower,
-                   MainWindow * game,QString path);
-
+                   MainWindow * game);
 private:
 
 };
@@ -77,11 +79,11 @@ private:
 class Physical_Explosion:public Bullet
 {
     Q_OBJECT
-    Q_PROPERTY(int opacity READ getOpacity WRITE setOpacity);
+    Q_PROPERTY(int opacity READ getOpacity WRITE setOpacity)
 
 public:
     Physical_Explosion(QPoint startPos,QPoint targetPos,Defend_Tower* tower,
-                       MainWindow * game,QString path);
+                       MainWindow * game);
     int getOpacity() const;//获得当前图片的透明度
     void setOpacity(int x);//设置图片当前的透明度
     void drawExplosion(QPainter * painter)const;//绘画爆炸效果
@@ -92,16 +94,16 @@ private slots:
 
 private:
     int b_range = 0;//攻击范围 代表图片的大小
-    QString b_explodePath;//爆炸的图片路径
+    QPixmap b_explodePath;//爆炸的图片路径
     int cur_Opacity = 0;//当前的透明度
 };
 
 class Frozen_Bullet:public Bullet{
     Q_OBJECT
-    Q_PROPERTY(int CurTime READ getCurTime WRITE setTime);
+    Q_PROPERTY(int CurTime READ getCurTime WRITE setTime)
 
 public:
-    Frozen_Bullet(QPoint startpos,Defend_Tower* tower,MainWindow * game,QString path,int time);
+    Frozen_Bullet(QPoint startpos,Defend_Tower* tower,MainWindow * game,int time);
     virtual void move();//实现冻住的函数
     void draw_Frozen(QPainter * painter)const;//画出冰冻效果
 
