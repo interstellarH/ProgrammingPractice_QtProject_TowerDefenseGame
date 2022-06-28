@@ -13,17 +13,18 @@
 const QSize Enemy::e_fixedSize(30,30);//this is a frequently used const,
 //adjust it according to the size of pictures
 
-Enemy::Enemy(wayPoint * startPoint, MainWindow * game,const QPixmap & pic):
+Enemy::Enemy(wayPoint * startPoint, MainWindow * game,int type):
     QObject(0),
     e_game(game),
-    e_pos(startPoint->getPos()),
-    e_pic(pic)
+    e_type(type),
+    e_pos(startPoint->getPos())
 {
     e_maxHp=40;
     e_currentHp=e_maxHp;
     e_speed=1;
     e_active=false;
     e_destinationWayPoint=startPoint->getNextWayPoint();
+    e_sprite=":/resources/monster1.png";
 }
 Enemy::~Enemy()
 {
@@ -47,7 +48,7 @@ void Enemy::draw(QPainter *painter) const
     painter->drawRect(bloodBarRect);
 
     QPoint temp(e_pos.x()-e_fixedSize.width()/2,e_pos.y()-e_fixedSize.height()/2);
-    painter->drawPixmap(temp.x(),temp.y(),e_pic);
+    painter->drawPixmap(temp.x(),temp.y(),e_sprite);
     painter->restore();
 }
 
@@ -128,7 +129,6 @@ void Enemy::reSetSpeed(int times)
 {
     e_speed*=times;
 }
-
 int getPhysicalRe()//获得物理抗击值
 {
     return e_physicalRe;
@@ -138,4 +138,3 @@ int getMagicalRe()//获得魔法抗击值
 {
     return e_magicalRe;
 }
-
