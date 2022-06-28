@@ -32,6 +32,9 @@ public:
 
     void getFrozen();//被防御塔定住
     void removeFrozen();//解除被定住负面状态
+    
+    int getPhysicalRe();//获得物理抗击值
+    int getMagicalRe();//获得魔法抗击值
 
     void reSetHp(int maxHp);
     void reSetSpeed(int times);
