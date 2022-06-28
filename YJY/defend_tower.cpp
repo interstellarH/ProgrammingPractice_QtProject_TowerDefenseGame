@@ -200,3 +200,8 @@ void Defend_Tower::getRemoved()//防御塔被移除
     }
     t_game->removeTower(this);
 }
+
+int Defend_Tower::get_attackGroupRange()//获得群体攻击范围
+{
+    return t_attackGroupRange;
+}
