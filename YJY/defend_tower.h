@@ -1,226 +1,70 @@
-#include "defend_tower.h"
-#include "mainwindow.h"
-#include "auxiliary_function.h"
-#include "bullet.h"
-#include "enemy.h"
+#ifndef DEFEND_TOWER_H
+#define DEFEND_TOWER_H
 
+#include <QObject>
 #include <QPoint>
-#include <QPainter>
+#include <QSize>
 #include <QString>
-#include <QPixmap>
 #include <QTimer>
-#include <QVector2D>
-#include <QtMath>
+#include "enemy.h"
+#include "mainwindow.h"
 
-const QSize Defend_Tower::t_picturesize(35,35);
+class MainWindow;
+class QPainter;
+class Enemy;
+class QTimer;
 
-Defend_Tower::Defend_Tower(QPoint pos,MainWindow *game,int type)
-{
-    t_pos=pos;
-    t_game=game;
-    //初始化属性
-    t_type=type;//防御塔类型
-    t_attackrange=70;//攻击范围
-    t_attacking=0;//是否在攻击
-    t_level=1;//防御塔等级
-    if(type==1)
-    {
-        t_damage=10;//防御塔的攻击力
-        t_magical=0;//防御塔的破魔属性值
-        t_attackGroupRange=0;//群体攻击炮塔的爆炸范围or范围塔的定时范围 单体炮塔此项为0
-        t_fireRate=500;//射速or攻击间隔
-        t_attacker=NULL;
-        t_sprite = QPixmap(":/new/prefix1/resource1/defend_tower1.jpg");
-    }
-    else if(type==2)
-    {
-        t_damage=10;
-        t_magical=0.5;
-        t_attackGroupRange=0;
-        t_fireRate=750;
-        t_attacker=NULL;
-        t_sprite = QPixmap(":/new/prefix1/resource1/defend_tower2.jpg");
-    }
-    else if(type==3)
-    {
-        t_damage=20;
-        t_magical=0;
-        t_attackGroupRange=50;
-        t_fireRate=1500;
-        t_attacker=NULL;
-        t_sprite = QPixmap(":/new/prefix1/resource1/defend_tower3.jpg");
-    }
-    else if(type==4)
-    {
-        t_damage=0;
-        t_magical=0;
-        t_attackGroupRange=50;
-        t_fireRate=1500;
-        t_attacker=NULL;
-        t_sprite = QPixmap(":/new/prefix1/resource1/defend_tower4.jpg");
-    }
-    t_fireRateTime=new QTimer(this);
-    connect(t_fireRateTime,SIGNAL(timeout()),this,SLOT(shootWeapon()));
-}
+class Defend_Tower:QObject{
+    Q_OBJECT
+public:
+    Defend_Tower(QPoint pos,MainWindow *game,int type);//文件路径记得更改
+    ~Defend_Tower();
+    Defend_Tower();
 
-Defend_Tower::~Defend_Tower()
-{
-    delete t_fireRateTime;
-    delete t_attacker;
-    t_attacker=NULL;
-    t_fireRateTime=NULL;
-    t_game=NULL;
-}
+    void draw(QPainter *painter)const;
 
-void Defend_Tower::chooseEnemyFromAttack(Enemy* enemy)
-{
-    t_attacker=enemy;
-    AttackEnemy();
-    t_attacker->getAttacked(this);
-}
+    void AttackEnemy();
+    void targetKilled();
+    void chooseEnemyFromAttack(Enemy * enemy);//从可以攻击的敌人中，选出攻击的敌人
+    void checkEnemyInRange();//检查敌人是否在攻击范围内
+    //单体攻击、群体攻击
+    void removeBullet();//移除防御塔产生的子弹
+    void lostSightOfEnemy();//丢失攻击目标的视野
+    Enemy * getAttackedEnemy();//得到正在攻击的敌人
+    //范围攻击
+    void pauseEnemy();
 
-void Defend_Tower::AttackEnemy()
-{
-    t_fireRateTime->start(t_fireRate);
-}
+    //升级与拆除
+    void reSetDamage(int damage);//重新设置攻击力
+    int getDamage();//得到防御塔的攻击力
+    double getMagical();
+    void levelChange();//防御塔升级
+    int getLevel();//得到防御塔的等级
+    int get_attackGroupRange();//获得群体攻击范围
 
-void Defend_Tower::shootWeapon()
-{
-    Bullet* b = nullptr;
-    if(t_type==1){
-         b=new Physical_Bullet(t_pos,t_attacker->getPos(),this,this->t_game);
-    }
-    else if(t_type==2){
-        b=new Magical_Bullet(t_pos,t_attacker->getPos(),this,this->t_game);
-    }
-    else if(t_type==3){
-        b=new Physical_Explosion(t_pos,t_attacker->getPos(),this,this->t_game);
-    }
-    else if(t_type==4){
-        b=new Frozen_Bullet(t_pos,this,this->t_game,2000);
-    }
-    b->move();
-    t_game->addBullet(b);
-}
+    void getRemoved();//防御塔被移除
 
-void Defend_Tower::targetKilled()
-{
-    if(t_attacker)
-    {
-        t_attacker=NULL;
-    }
-    t_fireRateTime->stop();
-}
+private:
+    QPoint t_pos;//防御塔中心点
+    QPixmap t_sprite = QPixmap(":/new/prefix1/resource1/defend_tower1.jpg");//防御塔图片路径
 
-void Defend_Tower::lostSightOfEnemy()
-{
-    t_attacker->getLostSight(this);
-    if(t_attacker!=NULL)
-    {
-        t_attacker=NULL;
-    }
-    t_fireRateTime->stop();
-}
+    int t_attackrange;//攻击范围
+    static const QSize t_picturesize;//防御塔图片大小
+    MainWindow * t_game;
 
-void Defend_Tower::checkEnemyInRange()
-{
-    if(t_attacker!=NULL)
-    {
-        QVector2D normalized(t_attacker->getPos()-t_pos);
-        normalized.normalized();
-        if(!collisionWithCircle(t_pos,t_attackrange,t_attacker->getPos(),1))
-        {
-            lostSightOfEnemy();
-        }
-    }
-    else
-    {
-        QList<Enemy*> enemylist=t_game->getEnemyList();
-        QList<Enemy*>::Iterator it=enemylist.begin();
-        auto end=enemylist.end();
-        while(it!=end)
-        {
-            if(collisionWithCircle(t_pos,t_attackrange,(*it)->getPos(),1))
-            {
-                chooseEnemyFromAttack((*it));
-                break;
-            }
-            it++;
-        }
+    bool t_attacking;//是否在攻击
+    int t_damage;//防御塔的攻击力
+    double t_magical;//防御塔的破魔属性值
+    int t_attackGroupRange;//群体攻击炮塔的爆炸范围or范围塔的定时范围 单体炮塔此项为0
+    int t_fireRate;//射速or攻击间隔
+    int t_type;//防御塔的类型
+    int t_level=1;//防御塔的等级
 
+    Enemy *t_attacker;//正在攻击的敌人
+    QTimer * t_fireRateTime;//开始攻击的计时器
 
-    }
-}
+private slots:
+    void shootWeapon();//实现和子弹类的连接
 
-Enemy* Defend_Tower::getAttackedEnemy()
-{
-    return t_attacker;
-}
-
-void Defend_Tower::draw(QPainter* painter)const
-{
-    painter->save();
-    painter->setPen(Qt::red);//可以采用更漂亮的颜色哦
-    painter->drawEllipse(t_pos,t_attackrange,t_attackrange);
-    painter->drawText(QRect(this->t_pos.x()-30,this->t_pos.y()+15,100,25),QString("level: %1").arg(t_level));//把防御塔的等级画出来
-    painter->drawPixmap(t_pos.x()-t_picturesize.width()/2,t_pos.y()-t_picturesize.height()/2,t_sprite);
-}
-
-int Defend_Tower::getDamage()//得到防御塔的攻击力
-{
-    return t_damage;
-}
-
-void Defend_Tower::levelChange()//防御塔升级
-{
-    t_level++;
-    if(t_type==1)
-    {
-        t_damage+=10;
-        t_attackrange+=30;
-        t_fireRate-=50;
-    }
-    else if(t_type==2)
-    {
-        t_damage+=10;
-        t_attackrange+=30;
-        t_magical-=0.2;
-        t_fireRate-=50;
-    }
-    else if(t_type==3)
-    {
-        t_damage+=10;
-        t_attackrange+=30;
-        t_attackGroupRange+=20;
-        t_fireRate-=150;
-    }
-    else if(t_type==4)
-    {
-        t_attackrange+=30;
-        t_attackGroupRange+=40;
-        t_fireRate-=100;
-    }
-}
-int Defend_Tower::getLevel()//得到防御塔的等级
-{
-    return t_level;
-}
-
-void Defend_Tower::getRemoved()//防御塔被移除
-{
-    if(t_attacker!=NULL)
-    {
-        t_attacker->getLostSight(this);
-    }
-    t_game->removeTower(this);
-}
-
-int Defend_Tower::get_attackGroupRange()//获得群体攻击范围
-{
-    return t_attackGroupRange;
-}
-
-double Defend_Tower::getMagical()
-{
-    return t_magical;
-}
+};
+#endif // DEFEND_TOWER_H
