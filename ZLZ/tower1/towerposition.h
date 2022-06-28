@@ -37,8 +37,8 @@ public:
 
     bool hasButton2();//判断该位置是否有button
     void setHasButton2(bool hasbutton=1);//设置有无button
-    selectButton* getButton2();
-    void setButton2(selectButton* x);
+    selectButton2* getButton2();
+    void setButton2(selectButton2* x);
 
     bool hasTowers(int i);
     void sethasTowers(int i, bool x=1);
@@ -62,7 +62,7 @@ private:
     bool m_hasbutton;
     selectButton* m_button;//选择防御塔的按钮
     bool m_hasbutton2;
-    selectButton* m_button2;
+    selectButton2* m_button2;
 
     bool m_update1;
     bool m_update2;
