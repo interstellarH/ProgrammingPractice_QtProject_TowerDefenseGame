@@ -527,6 +527,7 @@ void MainWindow::drawWaves(QPainter *painter) const
     painter->save();
     painter->setPen(Qt::red);//这里具体的参数确定了位置
     painter->drawText(QRect(500,5,100,25),QString("WAVES: %1").arg(m_waves+1));
+    painter->drawPixmap(450,5,25,25,wave_sprite);
     painter->restore();
 }
 
@@ -534,7 +535,8 @@ void MainWindow::drawHp(QPainter *painter) const
 {
     painter->save();
     painter->setPen(Qt::red);
-    painter->drawText(QRect(30,5,100,25),QString("HP: %1").arg(m_playerHp));
+    painter->drawText(QRect(50,5,100,25),QString("HP: %1").arg(m_playerHp));
+    painter->drawPixmap(10,5,25,25,Hp_sprite);
     painter->restore();
 }
 
@@ -543,6 +545,8 @@ void MainWindow::drawGold(QPainter *painter) const
     painter->save();
     painter->setPen(Qt::red);
     painter->drawText(QRect(300,5,100,25),QString("GOLD: %1").arg(m_playerGold));
+    painter->drawPixmap(10,5,25,25,Hp_sprite);
+    painter->restore();//为何这个之前并没有写
 }
 
 bool MainWindow::loadWaves()
@@ -558,22 +562,8 @@ bool MainWindow::loadWaves()
     for(int i=0;i<6;++i)
     {
         wayPoint * startWayPoint;
-        if(getPath()==":/images/background4.jpg") //随机从两边进入
-        {
-            int a=rand()%100;
-            if(a<50)
-            {
-                startWayPoint=m_wayPointList.first();
-            }
-            if(a>=50)
-            {
-               startWayPoint=m_wayPointList[7];
-            }
-        }
-        else
-        {
-            startWayPoint=m_wayPointList.first();
-        }
+        startWayPoint=m_wayPointList.first();
+
         Enemy * enemy=new Enemy(startWayPoint,this);
         //Boss* enemy=new Boss(startWayPoint,this);
         m_enemyList.push_back(enemy);
