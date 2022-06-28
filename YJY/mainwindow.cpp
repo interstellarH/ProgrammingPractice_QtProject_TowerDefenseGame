@@ -578,23 +578,18 @@ bool MainWindow::loadWaves()
     return true;
 }
 
-void build_tower(int i)//i代表塔的类型（记得回.h文件中添加这一部分）
+void MainWindow::build_tower(int i)//i代表塔的类型
 {
-    QString pathes={};//把用到的四种塔路径放在这里
-
     if(canBuyTower(i))
     {
-        it->setHasTowers[i](true);
+        it->setHasTowers(i,true);
         m_playerGold-=tower1Cost;
-        QString path=paths[i];
-        Tower * tower=new Tower(it->centerPos(),this,path,i*10);//四个参数，分别是防御塔的中心点；主界面；防御塔图片路径；防御塔的攻击力。其实这里还可以有很多的发挥，比如防御塔的攻击速度也放在构造函数的参数中
-        //最后一个攻击力参数我修改成和i有关的了
+        Defend_Tower * tower=new Defend_Tower(it->centerPos(),this,i);//四个参数，分别是防御塔的中心点；主界面；防御塔类型。
         it->setTower(tower);
         m_towerList.push_back(tower);
         update();
     }
 }
-
 void MainWindow::mousePressEvent(QMouseEvent * event)
 {
     QPoint pressPos=event->pos();
