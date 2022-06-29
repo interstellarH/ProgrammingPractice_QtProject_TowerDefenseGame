@@ -2,6 +2,7 @@
 #include "mainwindow.h"
 #include "bullet.h"
 #include "enemy.h"
+#include "auxiliary_function.h"
 
 #include <QPoint>
 #include <QPainter>
