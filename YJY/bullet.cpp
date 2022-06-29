@@ -157,4 +157,11 @@ void Frozen_Bullet::reset_speed(){
         attack_enemy->removeFrozen();
     }
 }
+int Frozen_Bullet::getCurTime()const
+{
+    return b_CurTime;
+}
 
+void Frozen_Bullet::setTime(int x){
+    b_CurTime=x;
+}
