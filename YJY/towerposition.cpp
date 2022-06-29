@@ -12,7 +12,7 @@ TowerPosition::TowerPosition(QPoint pos):
     m_hasbutton(false),
     m_hasbutton2(false)
 {
-    m_sprite=QPixmap(":images/towerpos3.png");
+    m_sprite=QPixmap(":new/prefix/resource1/TP.png");
     m_hasTowers[1]=false;
     m_hasTowers[2]=false;
     m_hasTowers[3]=false;
