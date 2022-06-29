@@ -408,7 +408,7 @@ bool MainWindow::canBuyTower(int i)
     return false;
 }
 
-void MainWindow::removeButton(selectButton *button)
+/*void MainWindow::removeButton(selectButton *button)
 {
     Q_ASSERT(button);
     //Q_ASSERT是在调试的时候专门使用的“断言”，接收一个bool值，如果bool=1，则正常运行，否则程序自动断掉
@@ -422,7 +422,7 @@ void MainWindow::removeButton2(selectButton2 *button)
     Q_ASSERT(button);
     m_selectButton2List.removeOne(button);
     delete button;
-}
+}*/
 
 void MainWindow::removeTower(Defend_Tower *tower)
 {
@@ -479,7 +479,7 @@ bool MainWindow::canUpdate2()
     return false;
 }
 
-QList<Enemy *> MainWindow::getEnemyList()
+QList<Enemy *> & MainWindow::getEnemyList()
 {
     return m_enemyList;
 }
@@ -555,25 +555,22 @@ bool MainWindow::loadWaves()
     {
         return false;
     }
-
-    int enemyStartInterval1[]={100,500,600,1000,3000,6000};
-    int enemyStartInterval2[]={100,800,2000,4000,10000,20000};
-    int enemyStartInterval3[]={100,300,500,700,1000,1500};//敌人出现的越密集越不好打，但是观感就不是很好了
-    for(int i=0;i<6;++i)
+    //数组元素代表时间，传入singleShot函数的第一个参数
+    int enemyStartInterval1[]={1000,2000,4000,6000,8000,10000,13000,15000,18000,20000};//第一波战线比较长，留出时间建塔
+    int enemyStartInterval2[]={100,500,600,1000,2000,3500,5000,6000,7000,8000};//其实500的间隔就已经比较短了，1000正好
+    int enemyStartInterval3[]={500,600,700,800,1000,1200,1500,1600,1800,2000};//高密度进攻，如果没有减速和范围攻击基本打不死
+    for(int i=0;i<10;++i)
     {
         wayPoint * startWayPoint;
         startWayPoint=m_wayPointList.first();
-
-        Enemy * enemy=new Enemy(startWayPoint,this);
-        //Boss* enemy=new Boss(startWayPoint,this);
+        Enemy * enemy=new Enemy(startWayPoint,this,m_waves%3+1);//加入类型参数
         m_enemyList.push_back(enemy);
+        enemy->reSetHp(40+50*m_waves);//波数增加，怪物的血量增加，一次加5点
+        if(m_waves>=4) enemy->reSetSpeed(2);//2就非常快了
 
-        enemy->reSetHp(40+60*(0+m_waves));//波数增加，怪物的血量增加，一次加20点
-        enemy->reSetSpeed(m_waves/2+1);
-
-        if(m_waves==0||m_waves==3) QTimer::singleShot(enemyStartInterval1[i],enemy,SLOT(doActive()));
-        else if(m_waves==1||m_waves==4) QTimer::singleShot(enemyStartInterval2[i],enemy,SLOT(doActive()));//纠正了等于号写成赋值号的问题
-        else if(m_waves==2||m_waves==5) QTimer::singleShot(enemyStartInterval3[i],enemy,SLOT(doActive()));
+        if(m_waves<2) QTimer::singleShot(enemyStartInterval1[i],enemy,SLOT(doActive()));
+        else if(m_waves>=2&&m_waves<4) QTimer::singleShot(enemyStartInterval2[i],enemy,SLOT(doActive()));
+        else QTimer::singleShot(enemyStartInterval3[i],enemy,SLOT(doActive()));
     }
     return true;
 }
@@ -584,7 +581,7 @@ void MainWindow::build_tower(int i,QList<TowerPosition>::iterator it)//i代表�
     {
         it->sethasTowers(i,true);
         m_playerGold-=tower1Cost;
-        Defend_Tower * tower=new Defend_Tower(it->centerPos(),this,i);//四个参数，分别是防御塔的中心点；主界面；防御塔类型。
+        Defend_Tower * tower=new Defend_Tower(it->getCenterPos(),this,i);//四个参数，分别是防御塔的中心点；主界面；防御塔类型。
         it->setTower(tower);
         m_towerList.push_back(tower);
         update();
@@ -610,7 +607,7 @@ void MainWindow::mousePressEvent(QMouseEvent * event)
                 break;
             }
             //下面的判断语句，要先判断hasbutton2，不能先判断containPos.因为如果没有button2，在进入这个判断框的时候，会先getbutton2，但是button2是NULL，程序会异常结束。
-            else if(it->hasButton2() && it->getButton2()->containPos(pressPos) && !it->hasButton() && !it->containPos(pressPos) &&it->hasTower())
+            else if(it->hasButton2() && it->getButton2()->ContainPos(pressPos) && !it->hasButton() && !it->ContainPos(pressPos) &&it->hasTower())
             {//在有button2的情况下，点击button2的内部
                 if(pressPos.y()<(it->getButton2()->getPos().y()+25))//我直接设置了第一个选择框的height是25，这里就直接用25了
                 //通过y坐标来实现判断到底是摁remove还是upgrade
@@ -619,14 +616,14 @@ void MainWindow::mousePressEvent(QMouseEvent * event)
                     {
                         it->sethasUpdate1(true);
                         m_playerGold-=towerupdate1Cost;
-                        it->get_tower()->reSetDamage(it->get_tower()->getDamgae()+50);//不仅是攻击力要提升，图片也可以改变
+                        it->get_tower()->reSetDamage(it->get_tower()->getDamage()+50);//不仅是攻击力要提升，图片也可以改变
                         it->get_tower()->levelChange();
                     }
                     else if(canUpdate2() && it->hasUpdate1() && !it->hasUpdate2())
                     {
                         it->sethasUpdate2(true);
                         m_playerGold-=towerupdate2Cost;
-                        it->get_tower()->reSetDamage(it->get_tower()->getDamgae()+100);
+                        it->get_tower()->reSetDamage(it->get_tower()->getDamage()+100);
                         it->get_tower()->levelChange();
                     }
                 }
@@ -676,7 +673,7 @@ void MainWindow::mousePressEvent(QMouseEvent * event)
             {
                 it->setHasButton2(true);
                 QPoint tmp(it->getPos().x()+35,it->getPos().y());//我是把防御塔坑的右上顶点当作button2的端点
-                selectButton2* button2=new selectButton2(tmp,this,100,50);//这里之前有一个小笔误
+                selectButton2* button2=new selectButton2(tmp,this);//这里之前有一个小笔误
                 button2->setTower(it->get_tower());//我写这个setTower()的目的是得到防御塔的等级，不同等级的updatecost不一样，具体的你可以看button2的draw方法
                 m_selectButton2List.push_back(button2);
                 it->setButton2(button2);
