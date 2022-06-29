@@ -19,13 +19,25 @@ Enemy::Enemy(wayPoint * startPoint, MainWindow * game,int type):
     e_type(type),
     e_pos(startPoint->getPos())
 {
-    e_maxHp=40;
-    e_currentHp=e_maxHp;
-    e_speed=1;
     e_active=false;
+    if(type==1){
+        e_currentHp=e_maxHp=40;
+        e_speed=1;
+        e_sprite=QPixmap(":/new/prefix1/resource1/M1.png");
+    }
+    else if(type==2){//血更厚但是速度慢
+        e_currentHp=e_maxHp=80;
+        e_speed=0.6;
+        e_sprite=QPixmap(":/new/prefix1/resource1/M2.png");
+    }
+    else if(type==3){//速度快血薄
+        e_currentHp=e_maxHp=15;
+        e_speed=3;
+        e_sprite=QPixmap(":/new/prefix1/resource1/M3.png");
+    }
     e_destinationWayPoint=startPoint->getNextWayPoint();
-    e_sprite=QPixmap(":/resources/monster1.png");
 }
+
 Enemy::~Enemy()
 {
     e_attackerTowerList.clear();
@@ -55,7 +67,7 @@ void Enemy::draw(QPainter *painter) const
 void Enemy::move()
 {
     if(!e_active) return;
-    if(collisionWithCircle(e_pos,1,e_destinationWayPoint->getNextWayPoint()->getPos(),1))//arriving at WayPoint
+    if(collisionWithCircle(e_pos,1,e_destinationWayPoint->getNextWayPoint()->getPos(),1));//arriving at WayPoint
     {
         if(e_destinationWayPoint->getNextWayPoint()){
             e_pos=e_destinationWayPoint->getPos();
