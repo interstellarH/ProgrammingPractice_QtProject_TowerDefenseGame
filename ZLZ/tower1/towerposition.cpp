@@ -6,13 +6,13 @@
 #include <QPixmap>
 
 const QSize TowerPosition::m_fixedSize(35,35);
-TowerPosition::TowerPosition(QPoint pos,const QPixmap & sprite):
+TowerPosition::TowerPosition(QPoint pos):
     m_hasTower(false),
     m_hasbutton(false),
     m_hasbutton2(false),
-    m_pos(pos),
-    m_sprite(sprite)
+    m_pos(pos)
 {
+    m_sprite=QPixmap(":new/prefix/resource1/TP.png");
     m_hasTowers[1]=false;
     m_hasTowers[2]=false;
     m_hasTowers[3]=false;
@@ -121,7 +121,7 @@ bool TowerPosition::ContainPos(QPoint pos)
 
 void TowerPosition::draw(QPainter* painter)const
 {
-    painter->drawPixmap(m_pos.x(),m_pos.y(),m_sprite);
+    painter->drawPixmap(m_pos.x(),m_pos.y());
 }
 
 void TowerPosition::setTower(Defend_Tower* tower)
