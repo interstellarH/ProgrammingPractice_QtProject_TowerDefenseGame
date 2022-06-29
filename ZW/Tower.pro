@@ -38,7 +38,4 @@ FORMS    += mainwindow.ui \
     start.ui
 
 RESOURCES += \
-    rec.qrc \
-    rec.qrc \
-    resource1.qrc \
-    resource2.qrc
+    resource1.qrc

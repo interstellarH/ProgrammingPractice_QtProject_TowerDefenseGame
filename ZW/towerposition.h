@@ -4,65 +4,71 @@
 #include <QSize>
 #include <QPainter>
 #include <QString>
-
-class selectButton;
-class selectButton2;
+#include "selectbutton.h"
+#include "selectbutton2.h"
+#include <QPoint>
 class Defend_Tower;
+
 class TowerPosition
 {
 public:
-    TowerPosition(QPoint pos,QString path);//图片的路径
-    QPoint getCenterPos();//得到防御塔坑的中心点
-    QPoint getPos();//得到防御塔坑的左上点
+    TowerPosition(QPoint p, const QPixmap &sprite);
+    TowerPosition(QPoint p);
+    QPoint getCenterPos();//获取坑位的中心点
+    QPoint getleftPos();//获取坑位的左上点
+    int getWidth();
+    int getHeight();
+    Defend_Tower * get_tower();//得到私有成员tower
 
-    bool ContainPos(QPoint pos);//判断pos点是否在防御塔坑的范围内
+    bool ContainPos(QPoint pos);//判断某点是否在防御塔坑位的范围内
 
-    void draw(QPainter * painter) const;
+    void draw(QPainter * painter)const;
 
-    bool hasTower();//判断该防御塔坑内有没有防御塔
-    void setHasTower(bool hasTower);//设置是否有防御塔
+    bool hasTower();//判断坑位中是否有防御塔
 
-    bool hasButton();//判断该位置有没有button
-    void setHasButton(bool hasButton);//设置是否有button
-    void setButton(selectButton * button);//设置button
-    selectButton * getButton();//得到该位置的button
+    void sethasTower(bool hasTower=1);//设置是否有防御塔
 
-    bool m_hasTowerType[10];//判断是否有某一种塔
-    void setHasTowerType(int i, bool hasTowerType);//设置是否有防御塔
-    void containedInTower(int i);//判断是否在某种防御塔选择按钮的点击范围内
+    void setTower(Defend_Tower* tower);//设置防御塔
 
-    bool hasButton2();//判断该位置有没有button2
-    void setHasButton2(bool hasButton2);//设置是否有button2
-    void setButton2(selectButton2 * button);//设置button2
-    selectButton2 * getButton2();//得到该位置的button2
+    bool hasButton();//判断该位置是否有button
+    void setHasButton(bool hasbutton=1);//设置有无button
+    selectButton* getButton();
+    void setButton(selectButton* x);
 
-    void setHasUpdate1(bool hasUpdate1);//设置是否有第一次升级
+    bool hasButton2();//判断该位置是否有button
+    void setHasButton2(bool hasbutton=1);//设置有无button
+    selectButton2* getButton2();
+    void setButton2(selectButton2* x);
+
+    bool hasTowers(int i);
+    void sethasTowers(int i, bool x=1);
+
     bool hasUpdate1();
-
-    void setHasUpdate2(bool hasUpdate2);//设置是否有第二次升级
+    void sethasUpdate1(bool x);
     bool hasUpdate2();
+    void sethasUpdate2(bool x);
+    bool m_hasTower;//这里为什么要放在public里面呢
 
-    void setTower(Defend_Tower * tower);
-    Defend_Tower * getTower();
-    void setRemoveTower();//设置移除防御塔
- private:
-    QPoint m_pos;
-    QString m_path;
+    void setRemoveTower();//移除防御塔
 
-    bool m_hasTower;
-    bool m_hasButton;
-    static const QSize m_fixedSize;//防御塔坑的固定大小
-    static const int m_towerpos[10];//防御塔选择按钮的位置
+    QPoint getPos();
 
-    selectButton *m_button;
+private:
+    QPoint m_pos;//防御塔坑点位
+    QPixmap m_sprite;//图片路径
 
-    bool m_hasButton2;
-    selectButton2 * m_button2;//私有化button2
+    bool m_hasTowers[5];//类内定义变量的时候是不可以直接初始化的
 
-    bool m_hasUpdate1;
-    bool m_hasUpdate2;
+    bool m_hasbutton;
+    selectButton* m_button;//选择防御塔的按钮
+    bool m_hasbutton2;
+    selectButton2* m_button2;
 
-    Defend_Tower *m_tower;//私有化成员Tower
+    bool m_update1;
+    bool m_update2;
+
+    Defend_Tower* m_tower;
+    static const QSize m_fixedSize;
 };
 
 #endif // TOWERPOSITION_H

@@ -1,11 +1,36 @@
 <RCC>
     <qresource prefix="/new/prefix1">
-        <file>resource1/20220527194540.jpg</file>
-        <file>resource1/20220527194528.jpg</file>
-        <file>resource1/20220527194453.jpg</file>
-        <file>resource1/20220527222135.jpg</file>
+        <file>resource1/background.jpg</file>
+        <file>resource1/background1.jpg</file>
+        <file>resource1/background2.jpg</file>
+        <file>resource1/background3.jpg</file>
+        <file>resource1/background4.jpg</file>
+        <file>resource1/Bg.png</file>
+        <file>resource1/bullet.png</file>
+        <file>resource1/Default.png</file>
         <file>resource1/icon_gold.png</file>
+        <file>resource1/icon_HP.png</file>
+        <file>resource1/meaningless</file>
+        <file>resource1/monster1.png</file>
         <file>resource1/open_spot.png</file>
-        <file>resource1/20220615141656.jpg</file>
+        <file>resource1/tower.png</file>
+        <file>resource1/tower1.jpg</file>
+        <file>resource1/tower1.png</file>
+        <file>resource1/tower2.png</file>
+        <file>resource1/tower3.png</file>
+        <file>resource1/G.png</file>
+        <file>resource1/HP.png</file>
+        <file>resource1/Iceball.png</file>
+        <file>resource1/M1.png</file>
+        <file>resource1/M2.png</file>
+        <file>resource1/M3.png</file>
+        <file>resource1/M5.png</file>
+        <file>resource1/T1.png</file>
+        <file>resource1/T2.png</file>
+        <file>resource1/T3.png</file>
+        <file>resource1/T4.png</file>
+        <file>resource1/TP.png</file>
+        <file>resource1/Victory.png</file>
+        <file>resource1/W.png</file>
     </qresource>
 </RCC>

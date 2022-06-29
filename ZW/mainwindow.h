@@ -37,10 +37,10 @@ public:
     ~MainWindow();
 
     void paintEvent(QPaintEvent*);
-    
+
     QString getpath();
     void setpath(QString path);
-    
+
     void addWayPoint1();
     void addWayPoint2();
     void addWayPoint3();//用来添加航点的函数,分别为三个关卡绘制航点
@@ -48,15 +48,14 @@ public:
     void loadTowerPosition1();
     void loadTowerPosition2();
     void loadTowerPosition3();//加载防御塔坑位
-    
+
     void awardGold();
     void drawHp(QPainter * painter)const;
     void drawGold(QPainter * painter)const;
     void drawWaves(QPainter * painter)const;
     void doGameOver();
-    
+
     void getHp();//获取玩家当前血量的函数
-    void getHpHurted();//敌人抵达终点，玩家扣血
     void removeEnemy(Enemy *enemy);//敌人死亡之后触发
 
     QList<Enemy *>& getEnemyList();//获取Enemy_list //已修改
@@ -77,6 +76,9 @@ public:
     bool canUpdate1();//判断是否可以第一次升级
     bool canUpdate2();//判断是否可以第二次升级
 
+
+    void build_tower(int i, QList<TowerPosition>::Iterator it);//建塔
+    void getHpDamage();//基地血量减少
 private:
     Ui::MainWindow *ui;
     QString nowpath;
@@ -95,8 +97,11 @@ private:
     QList<selectButton2 *> m_selectButton2List;//用来储存selectButton2的list
 
     int m_playerHp;//基地的血量
-    int m_playerGlod;//初始金币
+    int m_playerGold;//初始金币
     int m_waves;//关卡的波数
+    QPixmap Hp_sprite;
+    QPixmap Gold_sprite;
+    QPixmap wave_sprite;
     bool m_gameWin;
     bool m_gameLose;
 
