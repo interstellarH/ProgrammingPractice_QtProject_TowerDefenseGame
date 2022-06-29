@@ -131,7 +131,7 @@ void TowerPosition::setTower(Defend_Tower* tower)
 
 void TowerPosition::setRemoveTower()
 {
-    sethasTower(NULL);
+    setTower(NULL);
     sethasTower(false);
     sethasTowers(1,false);
     sethasTowers(2,false);
