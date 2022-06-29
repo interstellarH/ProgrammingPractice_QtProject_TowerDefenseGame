@@ -48,7 +48,7 @@ void Enemy::draw(QPainter *painter) const
 {
     if(!e_active) return;
     painter->save();
-    static const int bloodBarWidth=m_fixedSize.width();
+    static const int bloodBarWidth=e_fixedSize.width();
     QPoint bloodBarPoint=e_pos+QPoint(-e_fixedSize.width()/2,-e_fixedSize.height());
     painter->setPen(Qt::NoPen);
     painter->setBrush(Qt::red);
@@ -67,7 +67,7 @@ void Enemy::draw(QPainter *painter) const
 void Enemy::move()
 {
     if(!e_active) return;
-    if(collisionWithCircle(e_pos,1,e_destinationWayPoint->getNextWayPoint(),1));//arriving at WayPoint
+    if(collisionWithCircle(e_pos,1,e_destinationWayPoint->getNextWayPoint()->getPos(),1));//arriving at WayPoint
     {
         if(e_destinationWayPoint->getNextWayPoint()){
             e_pos=e_destinationWayPoint->getPos();
@@ -118,16 +118,16 @@ void Enemy::getRemoved()//当血量非正时，敌人死亡，需要移除
     }
 }
 
-void getLostSight(Defend_Tower * tower)//敌人脱离tower的攻击范围
+void Enemy::getLostSight(Defend_Tower * tower)//敌人脱离tower的攻击范围
 {
     e_attackerTowerList.removeOne(tower);
 }
 
-void getFrozen()//被防御塔定住（修改为减速）
+void Enemy::getFrozen()//被防御塔定住（修改为减速）
 {
     e_speed/=10;
 }
-void removeFrozen()//解除被定住负面状态
+void Enemy::removeFrozen()//解除被定住负面状态
 {
     e_speed*=10;
 }
@@ -141,12 +141,12 @@ void Enemy::reSetSpeed(int times)
 {
     e_speed*=times;
 }
-int getPhysicalRe()//获得物理抗击值
+int Enemy::getPhysicalRe()//获得物理抗击值
 {
     return e_physicalRe;
 }
 
-int getMagicalRe()//获得魔法抗击值
+int Enemy::getMagicalRe()//获得魔法抗击值
 {
     return e_magicalRe;
 }
