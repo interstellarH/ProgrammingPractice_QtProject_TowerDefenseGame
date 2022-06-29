@@ -526,8 +526,8 @@ void MainWindow::drawWaves(QPainter *painter) const
 {
     painter->save();
     painter->setPen(Qt::red);//这里具体的参数确定了位置
-    painter->drawText(QRect(500,5,100,25),QString("WAVES: %1").arg(m_waves+1));
-    painter->drawPixmap(450,5,25,25,wave_sprite);
+    painter->drawText(QRect(450,5,100,25),QString("WAVES: %1").arg(m_waves+1));
+    painter->drawPixmap(420,3,30,30,QPixmap(":/new/prefix1/resource1/W.png"));
     painter->restore();
 }
 
@@ -535,8 +535,8 @@ void MainWindow::drawHp(QPainter *painter) const
 {
     painter->save();
     painter->setPen(Qt::red);
-    painter->drawText(QRect(50,5,100,25),QString("HP: %1").arg(m_playerHp));
-    painter->drawPixmap(10,5,25,25,Hp_sprite);
+    painter->drawText(QRect(200,5,100,25),QString("HP: %1").arg(m_playerHp));
+    painter->drawPixmap(170,0,30,30,QPixmap(":/new/prefix1/resource1/HP.png"));
     painter->restore();
 }
 
@@ -545,7 +545,7 @@ void MainWindow::drawGold(QPainter *painter) const
     painter->save();
     painter->setPen(Qt::red);
     painter->drawText(QRect(300,5,100,25),QString("GOLD: %1").arg(m_playerGold));
-    painter->drawPixmap(10,5,25,25,Hp_sprite);
+    painter->drawPixmap(270,0,30,30,QPixmap(":/new/prefix1/resource1/G.png"));
     painter->restore();//为何这个之前并没有写
 }
 
