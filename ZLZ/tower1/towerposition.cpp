@@ -19,14 +19,14 @@ TowerPosition::TowerPosition(QPoint pos):
     m_hasTowers[4]=false;
 }
 
-TowerPosition::TowerPosition(QPoint pos)
+/*TowerPosition::TowerPosition(QPoint pos)
 {
     m_pos=pos;
     m_hasTowers[1]=false;
     m_hasTowers[2]=false;
     m_hasTowers[3]=false;
     m_hasTowers[4]=false;
-}
+}*/
 
 bool TowerPosition::hasTower()
 {
@@ -121,7 +121,7 @@ bool TowerPosition::ContainPos(QPoint pos)
 
 void TowerPosition::draw(QPainter* painter)const
 {
-    painter->drawPixmap(m_pos.x(),m_pos.y());
+    painter->drawPixmap(m_pos.x(),m_pos.y(),m_sprite);
 }
 
 void TowerPosition::setTower(Defend_Tower* tower)
@@ -131,7 +131,7 @@ void TowerPosition::setTower(Defend_Tower* tower)
 
 void TowerPosition::setRemoveTower()
 {
-    setTower(NULL);
+    sethasTower(NULL);
     sethasTower(false);
     sethasTowers(1,false);
     sethasTowers(2,false);
