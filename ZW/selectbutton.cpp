@@ -8,10 +8,10 @@ selectButton::selectButton(QPoint pos,MainWindow * game):
     s_pos(pos)
 {
     //四种塔的图片路径信息
-    s_selectBoxImagePath[0]=":/images/tower1.jpg";
-    s_selectBoxImagePath[1]=":/images/tower2.png";
-    s_selectBoxImagePath[2]=":/images/tower3.png";
-    s_selectBoxImagePath[3]=":/images/tower4.png";
+    s_selectBoxImagePath[0]=QPixmap(":/new/prefix1/resource1/T1.png");
+    s_selectBoxImagePath[1]=QPixmap(":/new/prefix1/resource1/T2.png");
+    s_selectBoxImagePath[2]=QPixmap(":/new/prefix1/resource1/T3.png");
+    s_selectBoxImagePath[3]=QPixmap(":/new/prefix1/resource1/T4.png");
 }
 
 selectButton::~selectButton()

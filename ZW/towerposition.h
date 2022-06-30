@@ -12,7 +12,6 @@ class Defend_Tower;
 class TowerPosition
 {
 public:
-    TowerPosition(QPoint p, const QPixmap &sprite);
     TowerPosition(QPoint p);
     QPoint getCenterPos();//获取坑位的中心点
     QPoint getleftPos();//获取坑位的左上点

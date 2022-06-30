@@ -8,5 +8,6 @@ int main(int argc, char *argv[])
     start w;
     w.paintEvent(NULL);
     w.show();
+
     return a.exec();
 }

@@ -31,7 +31,7 @@ Defend_Tower::Defend_Tower(QPoint pos,MainWindow *game,int type)
        t_attackGroupRange=0;//群体攻击炮塔的爆炸范围or范围塔的定时范围 单体炮塔此项为0
        t_fireRate=500;//射速or攻击间隔
        t_attacker=NULL;
-       t_sprite = QPixmap(":/new/prefix1/resource1/defend_tower1.jpg");
+       t_sprite = QPixmap(":/new/prefix1/resource1/T1.png");
     }
     else if(type==2)
     {
@@ -40,7 +40,7 @@ Defend_Tower::Defend_Tower(QPoint pos,MainWindow *game,int type)
        t_attackGroupRange=0;
        t_fireRate=750;
        t_attacker=NULL;
-       t_sprite = QPixmap(":/new/prefix1/resource1/defend_tower2.jpg");
+       t_sprite = QPixmap(":/new/prefix1/resource1/T2.png");
     }
     else if(type==3)
     {
@@ -49,16 +49,16 @@ Defend_Tower::Defend_Tower(QPoint pos,MainWindow *game,int type)
        t_attackGroupRange=50;
        t_fireRate=1500;
        t_attacker=NULL;
-       t_sprite = QPixmap(":/new/prefix1/resource1/defend_tower3.jpg");
+       t_sprite = QPixmap(":/new/prefix1/resource1/T3.png");
     }
     else if(type==4)
     {
        t_damage=0;
        t_magical=0;
        t_attackGroupRange=50;
-       t_fireRate=1500;
+       t_fireRate=10000;
        t_attacker=NULL;
-       t_sprite = QPixmap(":/new/prefix1/resource1/defend_tower4.jpg");
+       t_sprite = QPixmap(":/new/prefix1/resource1/T4.png");
     }
     t_fireRateTime=new QTimer(this);
     connect(t_fireRateTime,SIGNAL(timeout()),this,SLOT(shootWeapon()));

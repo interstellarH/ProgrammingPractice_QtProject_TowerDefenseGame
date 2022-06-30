@@ -15,7 +15,7 @@ Bullet::Bullet(QPoint startPos,QPoint targetPos,Defend_Tower* tower,MainWindow *
     b_startPos(startPos),b_targetPos(targetPos),b_tower(tower),b_game(game),b_damage(damage),b_magical(magical)
 {
     b_targetEnemy=tower->getAttackedEnemy();
-    b_sprite=QPixmap(":/resources/bullet.png");
+    b_sprite=QPixmap(":/new/prefix1/resources/bullet.png");
 }
 
 QPoint Bullet::getCurrentPos()
@@ -30,7 +30,7 @@ void Bullet::setCurrentPos(QPoint pos)
 
 void Bullet::move()
 {
-    int duration=100;//子弹飞行的时间，经过100ms击中敌人
+    int duration=300;//子弹飞行的时间，经过100ms击中敌人
     QPropertyAnimation * animation=new QPropertyAnimation(this,"b_currentPos");
     animation->setDuration(duration);//设置持续时间
     animation->setStartValue(b_startPos);//设置起始位置
@@ -42,7 +42,9 @@ void Bullet::move()
 void Bullet::hitTarget()
 {
     QList<Enemy*> enemylist;
-    enemylist.append(b_tower->getAttackedEnemy());
+    if(b_tower->getAttackedEnemy()){
+        enemylist.append(b_tower->getAttackedEnemy());
+    }
     foreach(Enemy* attack_enemy, b_game->getEnemyList()){
         if(attack_enemy==b_tower->getAttackedEnemy())continue;
         if(collisionWithCircle(attack_enemy->getPos(),b_tower->get_attackGroupRange(),b_targetPos,0)){
@@ -90,7 +92,9 @@ void Physical_Explosion::hitTarget()
 {
     b_range=b_tower->get_attackGroupRange();
     QList<Enemy*> enemylist;
-    enemylist.append(b_targetEnemy);
+    if(b_tower->getAttackedEnemy()){
+        enemylist.append(b_tower->getAttackedEnemy());
+    }
     foreach(Enemy* attack_enemy, b_game->getEnemyList()){
         if(attack_enemy==b_tower->getAttackedEnemy())continue;
         if(collisionWithCircle(attack_enemy->getPos(),b_range,b_targetPos,0)){
@@ -116,7 +120,9 @@ Frozen_Bullet::Frozen_Bullet(QPoint startPos,QPoint targetPos,Defend_Tower* towe
 }
 
 void Frozen_Bullet::move(){
-    enemylist.push_back(b_targetEnemy);
+    if(b_tower->getAttackedEnemy()){
+        enemylist.append(b_tower->getAttackedEnemy());
+    }
     foreach(Enemy* attack_enemy, b_game->getEnemyList()){
         if(attack_enemy==b_tower->getAttackedEnemy())continue;
         if(collisionWithCircle(attack_enemy->getPos(),b_tower->get_attackGroupRange(),b_targetPos,0)){

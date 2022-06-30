@@ -29,13 +29,12 @@ MainWindow::MainWindow(int lev,QWidget *parent):
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     level(lev),
-    m_playerHp(0),
-    m_playerGold(0),
+    m_playerHp(10),
+    m_playerGold(1000),
     m_waves(0),
     m_gameWin(0),
     m_gameLose(0)
 {
-    this->setFixedSize(750,375);
     ui->setupUi(this);
     this->resize(QSize(800,500));//为什么要这句
 
@@ -76,7 +75,7 @@ void MainWindow::paintEvent(QPaintEvent* )
 
     if(m_gameLose||m_gameWin)
     {
-        QString text= m_gameWin ? "You Lost":"You win";//这里最后还是改成贴图吧
+        QString text= m_gameWin ? "You Win":"You Lose";//这里最后还是改成贴图吧
         painter.setPen(Qt::red);
         painter.drawText(rect(),Qt::AlignCenter,text);
         return;
@@ -404,6 +403,8 @@ bool MainWindow::canBuyTower(int i)
         if(m_playerGold>=500) return true; break;
     case 3:
         if(m_playerGold>=600) return true; break;
+    case 4:
+        if(m_playerGold>=600) return true; break;
     }
     return false;
 }
@@ -426,6 +427,7 @@ void MainWindow::removeEnemy(Enemy *enemy)
         if(!loadWaves())
         {
             m_gameWin=true;
+            m_gameLose=false;
         }
     }
 }
@@ -502,6 +504,7 @@ void MainWindow::doGameOver()
     if(!m_gameLose)
     {
         m_gameLose=true;
+        m_gameWin=false;
     }
 }
 
@@ -540,24 +543,24 @@ bool MainWindow::loadWaves()
         return false;
     }
 
-    int enemyStartInterval1[]={100,500,600,1000,3000,6000};
-    int enemyStartInterval2[]={100,800,2000,4000,10000,20000};
-    int enemyStartInterval3[]={100,300,500,700,1000,1500};//敌人出现的越密集越不好打，但是观感就不是很好了
-    for(int i=0;i<6;++i)
+    int enemyStartInterval1[]={1000,2000,4000,6000,8000,10000,13000,15000,18000,20000};//第一波战线比较长，留出时间建塔
+    int enemyStartInterval2[]={100,500,600,1000,2000,3500,5000,6000,7000,8000};//其实500的间隔就已经比较短了，1000正好
+    int enemyStartInterval3[]={500,600,700,800,1000,1200,1500,1600,1800,2000};//高密度进攻，如果没有减速和范围攻击基本打不死
+    for(int i=0;i<10;++i)
     {
         wayPoint * startWayPoint;
         startWayPoint=m_wayPointList.first();
 
-        Enemy * enemy=new Enemy(startWayPoint,this,i);
+        Enemy * enemy=new Enemy(startWayPoint,this,m_waves%3+1);//加入类型参数
         //Boss* enemy=new Boss(startWayPoint,this);
         m_enemyList.push_back(enemy);
 
-        enemy->reSetHp(40+60*(0+m_waves));//波数增加，怪物的血量增加，一次加20点
-        enemy->reSetSpeed(m_waves/2+1);
+        enemy->reSetHp(40+50*m_waves);//波数增加，怪物的血量增加，一次加5点
+        if(m_waves>=4) enemy->reSetSpeed(2);//2就非常快了
 
-        if(m_waves==0||m_waves==3) QTimer::singleShot(enemyStartInterval1[i],enemy,SLOT(doActive()));
-        else if(m_waves==1||m_waves==4) QTimer::singleShot(enemyStartInterval2[i],enemy,SLOT(doActive()));//纠正了等于号写成赋值号的问题
-        else if(m_waves==2||m_waves==5) QTimer::singleShot(enemyStartInterval3[i],enemy,SLOT(doActive()));
+        if(m_waves<2) QTimer::singleShot(enemyStartInterval1[i],enemy,SLOT(doActive()));
+        else if(m_waves>=2&&m_waves<4) QTimer::singleShot(enemyStartInterval2[i],enemy,SLOT(doActive()));
+        else QTimer::singleShot(enemyStartInterval3[i],enemy,SLOT(doActive()));
     }
     return true;
 }

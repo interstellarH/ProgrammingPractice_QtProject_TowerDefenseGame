@@ -6,22 +6,13 @@
 #include <QPixmap>
 
 const QSize TowerPosition::m_fixedSize(35,35);
-TowerPosition::TowerPosition(QPoint pos,const QPixmap & sprite):
+TowerPosition::TowerPosition(QPoint pos):
     m_hasTower(false),
     m_pos(pos),
-    m_sprite(sprite),
     m_hasbutton(false),
     m_hasbutton2(false)
 {
-    m_hasTowers[1]=false;
-    m_hasTowers[2]=false;
-    m_hasTowers[3]=false;
-    m_hasTowers[4]=false;
-}
-
-TowerPosition::TowerPosition(QPoint pos)
-{
-    m_pos=pos;
+    m_sprite=QPixmap(":/new/prefix1/resource1/TP.png");
     m_hasTowers[1]=false;
     m_hasTowers[2]=false;
     m_hasTowers[3]=false;
@@ -48,8 +39,8 @@ void TowerPosition::sethasTower(bool x){
 void TowerPosition::sethasTowers(int i, bool x)
 {
     m_hasTowers[i]=x;
-    int k=0;
-    for(k=0;k<5;k++){
+    int k=1;
+    for(k=1;k<5;k++){
         if(m_hasTowers[k]==true){
             sethasTower(true);
             break;

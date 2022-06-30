@@ -32,5 +32,7 @@
         <file>resource1/TP.png</file>
         <file>resource1/Victory.png</file>
         <file>resource1/W.png</file>
+        <file>resource1/background5.jpg</file>
+        <file>resource1/background6.jpg</file>
     </qresource>
 </RCC>

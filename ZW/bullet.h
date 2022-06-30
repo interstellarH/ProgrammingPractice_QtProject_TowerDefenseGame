@@ -18,7 +18,7 @@ class QGraphicsOpacityEffect;
 class Bullet :public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(QPoint m_currentPos READ getCurrentPos WRITE setCurrentPos)//子弹动态移动
+    Q_PROPERTY(QPoint b_currentPos READ getCurrentPos WRITE setCurrentPos)//子弹动态移动
 public:
     Bullet();
     Bullet(QPoint startPos,QPoint targetPos,Defend_Tower* tower,MainWindow * game,int damage=0, int magical=0);

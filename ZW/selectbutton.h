@@ -22,7 +22,7 @@ public:
 private:
     MainWindow * s_game;//指向mainwindow的指针
     QPoint s_pos;//selectButton图片的左上角
-    QString s_selectBoxImagePath[10];//储存对应防御塔的图片的路径
+    QPixmap s_selectBoxImagePath[10];//储存对应防御塔的图片的路径
 
     int s_numOfTower[10];//可以选择的防御炮塔的种类,用数字作为编号
     static const QSize m_fixedSize;
