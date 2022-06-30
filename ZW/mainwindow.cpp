@@ -75,10 +75,15 @@ void MainWindow::paintEvent(QPaintEvent* )
 
     if(m_gameLose||m_gameWin)
     {
-        QString text= m_gameWin ? "You Win":"You Lose";//这里最后还是改成贴图吧
-        painter.setPen(Qt::red);
-        painter.drawText(rect(),Qt::AlignCenter,text);
-        return;
+        QPainter painter(this);
+        if(m_gameWin==1&&m_gameLose==0){
+            painter.drawPixmap(150,65,500,265,QPixmap(":/new/prefix1/resource1/Win.png"));
+            return;
+        }
+        else if(m_gameWin==0&&m_gameLose==1){
+            painter.drawPixmap(150,65,500,250,QPixmap(":/new/prefix1/resource1/Lose.png"));
+            return;
+        }
         //彩蛋也可以在这里添加，比如开一个计时器，button，如果点击看视频或者图片就可以复活
     }
 
@@ -523,7 +528,8 @@ void MainWindow::drawHp(QPainter *painter) const
     painter->save();
     painter->setPen(Qt::red);
     painter->drawText(QRect(200,5,100,25),QString("HP: %1").arg(m_playerHp));
-    painter->drawPixmap(170,0,30,30,QPixmap(":/new/prefix1/resource1/HP.png"));
+    if(!m_JiaYingMod2)painter->drawPixmap(170,0,30,30,QPixmap(":/new/prefix1/resource1/HP.png"));
+    else painter->drawPixmap(170,0,50,50,QPixmap(":/new/prefix1/resource1/JiaYing1.png"));
     painter->restore();
 }
 
@@ -583,6 +589,14 @@ void MainWindow::mousePressEvent(QMouseEvent * event)
 {
     QPoint pressPos=event->pos();
     auto it=m_towerPositionList.begin();
+    if(Qt::LeftButton==event->button()){
+        if(pressPos.x()>=420&&pressPos.x()<=450&&pressPos.y()>=3&&pressPos.y()<=33){
+                m_JiaYingMod=(m_JiaYingMod==true)?false:true;
+        }
+        else if(pressPos.x()>=170&&pressPos.x()<=200&&pressPos.y()>=0&&pressPos.y()<=30){
+                m_JiaYingMod2=(m_JiaYingMod2==true)?false:true;
+        }
+    }
     while(it!=m_towerPositionList.end())
     {
         if(Qt::LeftButton==event->button())//如果是鼠标左键点击
@@ -631,6 +645,7 @@ void MainWindow::mousePressEvent(QMouseEvent * event)
                 update();
                 break;
             }
+
             else if(it->hasButton() && !it->hasTower() && it->getButton()->containPos(pressPos))//在有button的情况下，选择三种炮台.其实这里代码有点重复了。如果用继承的方法，那就应该不要这么多的重复代码
             {
                 if(pressPos.x()<it->getButton()->getPos().x()+35)//鼠标点在选择框中的第一个防御塔内
@@ -674,4 +689,21 @@ void MainWindow::mousePressEvent(QMouseEvent * event)
         }
         ++it;
     }
+}
+
+
+bool MainWindow::getJiaYingMod(){
+    return m_JiaYingMod;
+}
+
+void MainWindow::setJiaYingMod(bool x){
+    m_JiaYingMod=x;
+}
+
+bool MainWindow::getJiaYingMod2(){
+    return m_JiaYingMod2;
+}
+
+void MainWindow::setJiaYingMod2(bool x){
+    m_JiaYingMod2=x;
 }

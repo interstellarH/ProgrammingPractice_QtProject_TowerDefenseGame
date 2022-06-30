@@ -15,7 +15,7 @@ Bullet::Bullet(QPoint startPos,QPoint targetPos,Defend_Tower* tower,MainWindow *
     b_startPos(startPos),b_targetPos(targetPos),b_tower(tower),b_game(game),b_damage(damage),b_magical(magical)
 {
     b_targetEnemy=tower->getAttackedEnemy();
-    b_sprite=QPixmap(":/new/prefix1/resources/bullet.png");
+    b_sprite=QPixmap(":/new/prefix1/resource1/bullet.png");
 }
 
 QPoint Bullet::getCurrentPos()
@@ -116,10 +116,11 @@ Frozen_Bullet::Frozen_Bullet(QPoint startPos,QPoint targetPos,Defend_Tower* towe
 {
     b_FrozenTime = time;
     b_range = tower->get_attackGroupRange();
-    b_sprite=QPixmap(":/resources/Iceball.png");
+    b_sprite=QPixmap(":/new/prefix1/resource1/Iceball.png");
 }
 
 void Frozen_Bullet::move(){
+    b_sprite=QPixmap(":/new/prefix1/resource1/Iceball.png");
     if(b_tower->getAttackedEnemy()){
         enemylist.append(b_tower->getAttackedEnemy());
     }

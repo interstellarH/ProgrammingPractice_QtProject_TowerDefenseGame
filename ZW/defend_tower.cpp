@@ -56,7 +56,7 @@ Defend_Tower::Defend_Tower(QPoint pos,MainWindow *game,int type)
        t_damage=0;
        t_magical=0;
        t_attackGroupRange=50;
-       t_fireRate=10000;
+       t_fireRate=1500;
        t_attacker=NULL;
        t_sprite = QPixmap(":/new/prefix1/resource1/T4.png");
     }

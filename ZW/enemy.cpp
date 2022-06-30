@@ -59,7 +59,15 @@ void Enemy::draw(QPainter *painter) const
     painter->drawRect(bloodBarRect);
 
     QPoint temp(e_pos.x()-e_fixedSize.width()/2,e_pos.y()-e_fixedSize.height()/2);
-    painter->drawPixmap(temp.x(),temp.y(),e_sprite);
+    if(!e_game->getJiaYingMod())painter->drawPixmap(temp.x(),temp.y(),e_sprite);
+    else {
+        QPixmap sprite;
+        if(e_type==1||e_type==3){
+            sprite=QPixmap(":/new/prefix1/resource1/cheems1.png");
+        }
+        else if(e_type==2)sprite=QPixmap(":/new/prefix1/resource1/Cheems2.png");
+        painter->drawPixmap(temp.x(),temp.y(),sprite);
+    }
     painter->restore();
 }
 

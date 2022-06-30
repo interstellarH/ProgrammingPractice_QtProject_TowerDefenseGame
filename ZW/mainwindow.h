@@ -79,6 +79,12 @@ public:
 
     void build_tower(int i, QList<TowerPosition>::Iterator it);//建塔
     void getHpDamage();//基地血量减少
+
+    bool getJiaYingMod();
+    void setJiaYingMod(bool x);
+
+    bool getJiaYingMod2();
+    void setJiaYingMod2(bool x);
 private:
     Ui::MainWindow *ui;
     QString nowpath;
@@ -104,6 +110,9 @@ private:
     QPixmap wave_sprite;
     bool m_gameWin;
     bool m_gameLose;
+
+    bool m_JiaYingMod=false;
+    bool m_JiaYingMod2=false;
 
 protected:
     void mousePressEvent(QMouseEvent *);

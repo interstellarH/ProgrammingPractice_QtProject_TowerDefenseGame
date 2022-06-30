@@ -34,5 +34,11 @@
         <file>resource1/W.png</file>
         <file>resource1/background5.jpg</file>
         <file>resource1/background6.jpg</file>
+        <file>resource1/ics.jpg</file>
+        <file>resource1/JiaYing1.png</file>
+        <file>resource1/cheems1.png</file>
+        <file>resource1/Cheems2.png</file>
+        <file>resource1/Lose.png</file>
+        <file>resource1/Win.png</file>
     </qresource>
 </RCC>
