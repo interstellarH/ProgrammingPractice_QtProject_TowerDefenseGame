@@ -1,0 +1,30 @@
+<RCC>
+    <qresource prefix="/new/prefix1">
+        <file>resource1/background.jpg</file>
+        <file>resource1/background1.jpg</file>
+        <file>resource1/background2.jpg</file>
+        <file>resource1/background3.jpg</file>
+        <file>resource1/bullet.png</file>
+        <file>resource1/defeat.png</file>
+        <file>resource1/G.png</file>
+        <file>resource1/HP.png</file>
+        <file>resource1/Iceball.png</file>
+        <file>resource1/Lost.png</file>
+        <file>resource1/M1.png</file>
+        <file>resource1/M2.png</file>
+        <file>resource1/M3.png</file>
+        <file>resource1/M5.png</file>
+        <file>resource1/T1.png</file>
+        <file>resource1/T2.png</file>
+        <file>resource1/T3.png</file>
+        <file>resource1/T4.png</file>
+        <file>resource1/TP.png</file>
+        <file>resource1/Victory.png</file>
+        <file>resource1/W.png</file>
+        <file>resource1/Win.png</file>
+        <file>resource1/CM.png</file>
+        <file>resource1/CM2.png</file>
+        <file>resource1/JiaYing.png</file>
+        <file>resource1/Magical_effect.png</file>
+    </qresource>
+</RCC>
