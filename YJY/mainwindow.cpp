@@ -76,12 +76,18 @@ void MainWindow::paintEvent(QPaintEvent* )
 
     if(m_gameLose||m_gameWin)
     {
-        QString text= m_gameWin ? "You Lost":"You win";//这里最后还是改成贴图吧
-        painter.setPen(Qt::red);
-        painter.drawText(rect(),Qt::AlignCenter,text);
-        return;
+        QPainter painter(this);
+        if(m_gameWin==1&&m_gameLose==0) {
+            painter.drawPixmap(150,65,500,265,QPixmap(":/new/prefix1/resource1/Win.png"));
+            return;
+        }
+        else if(m_gameLose==1&&m_gameWin==0){
+            painter.drawPixmap(150,65,500,250,QPixmap(":/new/prefix1/resource1/Lost.png"));
+            return ;
+        }
         //彩蛋也可以在这里添加，比如开一个计时器，button，如果点击看视频或者图片就可以复活
     }
+
 
     painter.drawPixmap(0,0,this->width(),this->height(),getpath());
     if(level==1||level==2)
@@ -249,11 +255,11 @@ void MainWindow::addWayPoint3()
 
     wayPoint * waypoint3y=new wayPoint(QPoint(160,330));
     waypoint2y->setNextWayPoint(waypoint3y);
-    m_wayPointList.push_back(waypoint3y);
+    m_wayPointList1.push_back(waypoint3y);//这里要补充1
 
     wayPoint * waypoint3z=new wayPoint(QPoint(160,330));
     waypoint2z->setNextWayPoint(waypoint3z);
-    m_wayPointList.push_back(waypoint3z);
+    m_wayPointList2.push_back(waypoint3z);
 
 
 
@@ -263,11 +269,11 @@ void MainWindow::addWayPoint3()
 
     wayPoint * waypoint4y=new wayPoint(QPoint(270,330));
     waypoint3y->setNextWayPoint(waypoint4y);
-    m_wayPointList.push_back(waypoint4y);
+    m_wayPointList1.push_back(waypoint4y);
 
     wayPoint * waypoint4z=new wayPoint(QPoint(270,330));
     waypoint3z->setNextWayPoint(waypoint4z);
-    m_wayPointList.push_back(waypoint4z);
+    m_wayPointList2.push_back(waypoint4z);
 
 
 
@@ -277,11 +283,11 @@ void MainWindow::addWayPoint3()
 
     wayPoint * waypoint5y=new wayPoint(QPoint(300,260));
     waypoint4y->setNextWayPoint(waypoint5y);
-    m_wayPointList.push_back(waypoint5y);
+    m_wayPointList1.push_back(waypoint5y);
 
     wayPoint * waypoint5z=new wayPoint(QPoint(270,415));
     waypoint4z->setNextWayPoint(waypoint5z);
-    m_wayPointList.push_back(waypoint5z);
+    m_wayPointList2.push_back(waypoint5z);
 
 
 
@@ -291,11 +297,11 @@ void MainWindow::addWayPoint3()
 
     wayPoint * waypoint6y=new wayPoint(QPoint(690,260));
     waypoint5y->setNextWayPoint(waypoint6y);
-    m_wayPointList.push_back(waypoint6y);
+    m_wayPointList1.push_back(waypoint6y);
 
     wayPoint * waypoint6z=new wayPoint(QPoint(690,415));
     waypoint5z->setNextWayPoint(waypoint6z);
-    m_wayPointList.push_back(waypoint6z);
+    m_wayPointList2.push_back(waypoint6z);
 
 
     wayPoint * waypoint7x=new wayPoint(QPoint(570,135));
@@ -562,11 +568,18 @@ bool MainWindow::loadWaves()
     for(int i=0;i<10;++i)
     {
         wayPoint * startWayPoint;
-        startWayPoint=m_wayPointList.first();
+        if(getpath()==":/new/prefix1/resource1/background3.jpg") {
+            if(m_waves==2||m_waves==3) startWayPoint=m_wayPointList.first();
+            else if(m_waves==0||m_waves==5) startWayPoint=m_wayPointList1.first();
+            else startWayPoint=m_wayPointList2.first();
+        }
+        else{
+            startWayPoint=m_wayPointList.first();
+        }
         Enemy * enemy=new Enemy(startWayPoint,this,m_waves%3+1);//加入类型参数
         m_enemyList.push_back(enemy);
         enemy->reSetHp(40+50*m_waves);//波数增加，怪物的血量增加，一次加5点
-        if(m_waves>=4) enemy->reSetSpeed(2);//2就非常快了
+        if(m_waves>=4) enemy->reSetSpeed(3);//2就非常快了
 
         if(m_waves<2) QTimer::singleShot(enemyStartInterval1[i],enemy,SLOT(doActive()));
         else if(m_waves>=2&&m_waves<4) QTimer::singleShot(enemyStartInterval2[i],enemy,SLOT(doActive()));
